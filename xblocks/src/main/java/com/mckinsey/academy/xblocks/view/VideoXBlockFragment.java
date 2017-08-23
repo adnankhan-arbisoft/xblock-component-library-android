@@ -34,6 +34,7 @@ import com.ooyala.android.ui.OoyalaPlayerLayoutController;
 import java.util.Observable;
 
 import static com.mckinsey.academy.xblocks.common.Constants.ERROR_MSG_CALLBACK_NOT_FOUND;
+import static com.mckinsey.academy.xblocks.common.Constants.EXTRA_XBLOCK_INFO;
 import static com.mckinsey.academy.xblocks.common.Constants.X_BLOCK_TAG;
 
 
@@ -43,8 +44,6 @@ import static com.mckinsey.academy.xblocks.common.Constants.X_BLOCK_TAG;
 public class VideoXBlockFragment extends LifecycleOwnerFragment {
 
     private static final String TAG = VideoXBlockFragment.class.getSimpleName();
-
-    private static final String EXTRA_XBLOCK_INFO = "xblock_info";
 
     private VideoXBlockCallback mCallback;
 

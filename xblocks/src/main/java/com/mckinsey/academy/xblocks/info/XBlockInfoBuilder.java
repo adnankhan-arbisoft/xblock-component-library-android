@@ -12,4 +12,8 @@ public class XBlockInfoBuilder {
     public static LongAnswerXBlockInfoBuilder buildLongAnswerXBlockInfo() {
         return new LongAnswerXBlockInfoBuilder();
     }
+
+    public static MCQXBlockInfoBuilder buildMCQXBlockInfo() {
+        return new MCQXBlockInfoBuilder();
+    }
 }
