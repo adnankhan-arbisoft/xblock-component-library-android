@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:exitFadeDuration="@android:integer/config_shortAnimTime">
+    <item android:state_pressed="true">
+        <shape
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle" >
+            <corners
+                android:radius="16dp"/>
+            <solid
+                android:color="#307AED" />
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle" >
+            <corners
+                android:radius="16dp"/>
+            <solid
+                android:color="#C4CED7" />
+        </shape>
+    </item>
+    <item>
+        <shape
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle" >
+            <corners
+                android:radius="16dp"/>
+            <solid
+                android:color="#3092ED" />
+        </shape>
+    </item>
+</selector>

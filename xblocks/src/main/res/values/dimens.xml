@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="long_answer_user_input_expanded_fragment_layout_margin">10dp</dimen>
+</resources>

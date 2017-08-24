@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Title & Description View -->
+    <android.support.v7.widget.CardView
+        android:id="@+id/question_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="28dp"
+        android:layout_weight="0.65">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="18dp">
+            <TextView
+                android:id="@+id/view_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@null"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/view_title"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/view_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textMultiLine"
+                    android:text="@null"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="normal"/>
+            </ScrollView>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <!-- User input section -->
+    <FrameLayout
+        android:id="@+id/user_answer_field_container"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="0.35"
+        android:background="@android:color/white">
+        <!-- Top border -->
+        <View
+            android:id="@+id/gray_bar_top"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="top"
+            android:background="#c2c2c2"/>
+        <EditText
+            android:id="@+id/view_user_answer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="22dp"
+            android:background="@android:color/white"
+            android:gravity="top|left"/>
+        <ImageView
+            android:id="@+id/btn_expand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/selector_ic_collapse_expand"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_field_expand"/>
+    </FrameLayout>
+</LinearLayout>

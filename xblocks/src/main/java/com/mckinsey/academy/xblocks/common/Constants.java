@@ -7,7 +7,7 @@ public class Constants {
 
     public final static String X_BLOCK_TAG = "XBlocks";
 
-    public final static String ERROR_MSG_CALLBACK_NOT_FOUND = "Probably wrong FragmentManager is "
-            + "passed to XBlock or Callback Interface not implemented";
+    public final static String ERROR_MSG_CALLBACK_NOT_FOUND = "Either wrong FragmentManager is "
+            + "passed to XBlock or the caller does not implement Callback Interface.";
 
 }
