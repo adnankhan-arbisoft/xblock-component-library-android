@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_wrong_answer">#F7E0E4</color>
+    <color name="color_right_answer">#E9EEE3</color>
+    <color name="color_wrong_answer_reason">#FF1D44</color>
+    <color name="color_right_answer_reason">#689F33</color>
+    <color name="color_light_blue">#2687DF</color>
+</resources>
