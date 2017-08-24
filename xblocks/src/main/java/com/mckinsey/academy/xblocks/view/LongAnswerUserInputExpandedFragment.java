@@ -9,6 +9,8 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +26,7 @@ import com.mckinsey.academy.xblocks.R;
 public class LongAnswerUserInputExpandedFragment extends BottomSheetDialogFragment {
 
     private static final String TAG = LongAnswerUserInputExpandedFragment.class.getSimpleName();
-    private static final String USER_INPUT = "user_input";
+    public static final String ARGS_KEY_USER_INPUT = "user_input";
 
     private EditText mUserInputEditText = null;
     private View mCollapseView = null;
@@ -35,7 +37,7 @@ public class LongAnswerUserInputExpandedFragment extends BottomSheetDialogFragme
     public static LongAnswerUserInputExpandedFragment getInstance(String userInput) {
         LongAnswerUserInputExpandedFragment dialogFragment = new LongAnswerUserInputExpandedFragment();
         Bundle args = new Bundle();
-        args.putString(USER_INPUT, userInput);
+        args.putString(ARGS_KEY_USER_INPUT, userInput);
         dialogFragment.setArguments(args);
         return dialogFragment;
     }
@@ -53,7 +55,7 @@ public class LongAnswerUserInputExpandedFragment extends BottomSheetDialogFragme
         mUserInputEditText = (EditText) inflatedView.findViewById(R.id.view_user_answer);
         Bundle args = getArguments();
         if(args != null) {
-            mUserInputEditText.setText(args.getString(USER_INPUT, ""));
+            mUserInputEditText.setText(args.getString(ARGS_KEY_USER_INPUT, ""));
             mUserInputEditText.setSelection(mUserInputEditText.getText().length());// setting cursor to end of text
         }
 
@@ -67,8 +69,29 @@ public class LongAnswerUserInputExpandedFragment extends BottomSheetDialogFragme
             }
         };
 
+        mDoneButton.setEnabled(mUserInputEditText.getText().length() > 0);
+
         mDoneButton.setOnClickListener(mDoneActionClickListener);
         mCollapseView.setOnClickListener(mDoneActionClickListener);
+
+        mUserInputEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mDoneButton != null) {
+                    mDoneButton.setEnabled(s.length() > 0);
+                }
+            }
+        });
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         dialog.setContentView(inflatedView);
@@ -126,7 +149,7 @@ public class LongAnswerUserInputExpandedFragment extends BottomSheetDialogFragme
         if (mUserInputEditText != null && targetFragment != null) {
             Intent toReturn = new Intent();
             toReturn.setAction(null);
-            toReturn.putExtra(USER_INPUT, mUserInputEditText.getText().toString());
+            toReturn.putExtra(ARGS_KEY_USER_INPUT, mUserInputEditText.getText().toString());
             targetFragment.onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, toReturn);
         }
 

@@ -80,11 +80,5 @@
             android:clickable="true"
             android:scaleType="fitXY"
             android:src="@drawable/ic_field_expand"/>
-        <!-- Bottom Border -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_gravity="bottom"
-            android:background="#c2c2c2"/>
     </FrameLayout>
 </LinearLayout>

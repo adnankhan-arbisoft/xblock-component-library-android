@@ -10,6 +10,16 @@
                 android:color="#307AED" />
         </shape>
     </item>
+    <item android:state_enabled="false">
+        <shape
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle" >
+            <corners
+                android:radius="16dp"/>
+            <solid
+                android:color="#C4CED7" />
+        </shape>
+    </item>
     <item>
         <shape
             xmlns:android="http://schemas.android.com/apk/res/android"

@@ -30,6 +30,8 @@ import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 
 import java.util.Observable;
 
+import static com.mckinsey.academy.xblocks.view.LongAnswerUserInputExpandedFragment.ARGS_KEY_USER_INPUT;
+
 /**
  * UI Component Fragment for XBlock Long-Answer Problem Builder
  */
@@ -159,7 +161,7 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment {
 
         if (requestCode == REQ_CODE_LONG_ANSWER_USER_INPUT && resultCode == Activity.RESULT_OK) {
             if (data != null && data.getExtras() != null) {
-                String userAnswerFromExpandedState = data.getStringExtra("user_input");
+                String userAnswerFromExpandedState = data.getStringExtra(ARGS_KEY_USER_INPUT);
                 if (userAnswerFromExpandedState != null) {
                     // not checking for length, should update parent view when the full screen closes.
                     // this can empty user answer also
