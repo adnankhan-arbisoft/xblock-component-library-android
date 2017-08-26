@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.xblock.sample"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.xblock.sample">
 
     <application
         android:allowBackup="true"
@@ -14,15 +14,17 @@
             android:label="@string/title_activity_xblock_samples"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <!-- Sample Activity For Video XBlock -->
-        <activity android:name=".XBlockSampleActivity"/>
+        <activity android:name=".XBlockSampleActivity" />
         <!-- Sample Activity for Long-Answer XBlock -->
         <activity android:name=".XBlockLongAnswerSampleActivity" />
+        <!-- Sample Activity for MCQ and MRQ XBlock -->
+        <activity android:name=".XBlockMCQSampleActivity" />
     </application>
 
 </manifest>

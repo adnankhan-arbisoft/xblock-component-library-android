@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.mckinsey.academy.xblocks.R;
@@ -13,6 +13,9 @@ import com.mckinsey.academy.xblocks.model.MCQOption;
 import com.mckinsey.academy.xblocks.utils.XBlockUtils;
 
 import java.util.List;
+
+import static com.mckinsey.academy.xblocks.model.MCQOption.SELECTED;
+import static com.mckinsey.academy.xblocks.model.MCQOption.UNSELECTED;
 
 /**
  * MCQ and MRQ list of options will be displayed to the user using this adapter
@@ -40,36 +43,26 @@ public class MCQOptionsAdapter extends
 
     @Override
     public MCQOptionsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MCQOptionsViewHolder(LayoutInflater.from(parent.getContext())
+        final MCQOptionsViewHolder holder =
+                new MCQOptionsViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_mcq_option, parent, false));
-    }
-
-    @Override
-    public void onBindViewHolder(final MCQOptionsViewHolder holder, int position) {
-        MCQOption mcqOption = arrOptions.get(position);
-        holder.optionText.setText(XBlockUtils.getTextFromHTML(mcqOption.getContent()));
-        updateOptionState(holder, mcqOption);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mItemSelectListener.onItemSelect(holder.getAdapterPosition());
             }
         });
+        holder.optionStateCheckbox.setButtonDrawable(isMultiSelectEnable ?
+                R.drawable.selector_mrq_options :
+                R.drawable.selector_mcq_options);
+        return holder;
     }
 
-    private void updateOptionState(MCQOptionsViewHolder holder, MCQOption mcqOption) {
-        int resourceId = R.drawable.ic_radio_inactive;
-        switch (mcqOption.getOptionState()) {
-            case UNSELECTED:
-                resourceId = isMultiSelectEnable ? R.drawable.ic_checkbox_inactive :
-                        R.drawable.ic_radio_inactive;
-                break;
-            case SELECTED:
-                resourceId = isMultiSelectEnable ? R.drawable.ic_checkbox_active :
-                        R.drawable.ic_radio_active;
-                break;
-        }
-        holder.optionState.setImageResource(resourceId);
+    @Override
+    public void onBindViewHolder(MCQOptionsViewHolder holder, int position) {
+        MCQOption mcqOption = arrOptions.get(position);
+        holder.optionText.setText(XBlockUtils.getTextFromHTML(mcqOption.getContent()));
+        holder.optionStateCheckbox.setChecked(mcqOption.getOptionState() == SELECTED);
     }
 
     @Override
@@ -83,12 +76,12 @@ public class MCQOptionsAdapter extends
     }
 
     class MCQOptionsViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView optionState;
+        private final CheckBox optionStateCheckbox;
         private final TextView optionText;
 
         MCQOptionsViewHolder(View view) {
             super(view);
-            optionState = (ImageView) view.findViewById(R.id.option_state);
+            optionStateCheckbox = (CheckBox) view.findViewById(R.id.option_state);
             optionText = (TextView) view.findViewById(R.id.option_text);
         }
     }

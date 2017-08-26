@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 
 import com.mckinsey.academy.xblocks.callbacks.Callback;
 import com.mckinsey.academy.xblocks.model.MCQOption;
-import com.mckinsey.academy.xblocks.model.OptionState;
 import com.mckinsey.academy.xblocks.view.MCQXBlockFragment;
 
 import java.util.ArrayList;
@@ -57,13 +56,13 @@ public class MCQXBlockInfo extends XBlockInfo {
     }
 
     /***
-     * Filter out the {@link MCQOption} who's status is {@link OptionState} is SELECTED
+     * Filter out the {@link MCQOption} who's status is  is SELECTED
      * @return return the list of the Selected Options
      */
     public List<Integer> getSelectedOptions() {
         List<Integer> selectedOptions = new ArrayList<>();
         for (int i = 0; i < arrOptions.size(); i++) {
-            if (arrOptions.get(i).getOptionState() == OptionState.SELECTED) {
+            if (arrOptions.get(i).getOptionState() == MCQOption.SELECTED) {
                 selectedOptions.add(i);
             }
         }
@@ -71,11 +70,11 @@ public class MCQXBlockInfo extends XBlockInfo {
     }
 
     /***
-     * Reset the state of the each {@link OptionState} UNSELECTED to retry the mQuestion
+     * Reset the state of the each {@link MCQOption} to UNSELECTED to retry the Question
      */
     public void resetOptionState() {
         for (MCQOption option : arrOptions) {
-            option.setOptionState(OptionState.UNSELECTED);
+            option.setOptionState(MCQOption.UNSELECTED);
         }
     }
 

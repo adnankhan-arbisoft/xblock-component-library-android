@@ -16,8 +16,8 @@ import com.mckinsey.academy.xblocks.info.MCQXBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 import com.mckinsey.academy.xblocks.listener.RecyclerViewItemSelectListener;
+import com.mckinsey.academy.xblocks.model.MCQOption;
 import com.mckinsey.academy.xblocks.model.MCQResult;
-import com.mckinsey.academy.xblocks.model.OptionState;
 import com.mckinsey.academy.xblocks.utils.XBlockUtils;
 import com.mckinsey.academy.xblocks.view.adapters.MCQOptionsAdapter;
 import com.mckinsey.academy.xblocks.view.adapters.MCQResultAdapter;
@@ -90,7 +90,7 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment
             mXBlockInfo.getOptions().get(position).toggleState();
         } else {
             mXBlockInfo.resetOptionState();
-            mXBlockInfo.getOptions().get(position).setOptionState(OptionState.SELECTED);
+            mXBlockInfo.getOptions().get(position).setOptionState(MCQOption.SELECTED);
         }
         mMcqOptionsAdapter.setOptions(mXBlockInfo.getOptions());
     }
