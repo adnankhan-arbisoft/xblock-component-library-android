@@ -11,6 +11,8 @@ import android.widget.Button;
  */
 public class XBlockSamplesActivity extends AppCompatActivity {
 
+    public static final String IS_MULTI_SELECT_ENABLE = "isMultiSelectEnable";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,11 +28,31 @@ public class XBlockSamplesActivity extends AppCompatActivity {
         });
 
         Button btnLongAnswerXBlock = (Button) findViewById(R.id.btn_launch_long_answer_xblock);
-        btnLongAnswerXBlock.setOnClickListener(new View.OnClickListener(){
+        btnLongAnswerXBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent longAnswerXBlockActivity = new Intent(XBlockSamplesActivity.this, XBlockLongAnswerSampleActivity.class);
                 startActivity(longAnswerXBlockActivity);
+            }
+        });
+
+        Button btnLaunchMCQXBlock = (Button) findViewById(R.id.btn_launch_mcq_xblock);
+        btnLaunchMCQXBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mcqSampleActivity = new Intent(XBlockSamplesActivity.this, XBlockMCQSampleActivity.class);
+                mcqSampleActivity.putExtra(IS_MULTI_SELECT_ENABLE, false);
+                startActivity(mcqSampleActivity);
+            }
+        });
+
+        Button btnLaunchMRQXBlock = (Button) findViewById(R.id.btn_launch_mrq_xblock);
+        btnLaunchMRQXBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mrqSampleActivity = new Intent(XBlockSamplesActivity.this, XBlockMCQSampleActivity.class);
+                mrqSampleActivity.putExtra(IS_MULTI_SELECT_ENABLE, true);
+                startActivity(mrqSampleActivity);
             }
         });
     }

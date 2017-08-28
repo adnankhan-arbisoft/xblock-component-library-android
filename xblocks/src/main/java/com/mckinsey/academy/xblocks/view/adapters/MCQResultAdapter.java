@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,8 +41,10 @@ public class MCQResultAdapter extends RecyclerView.Adapter<MCQResultAdapter.MCQR
     @Override
     public MCQResultViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        return new MCQResultViewHolder(LayoutInflater.from(parent.getContext())
+        MCQResultViewHolder holder = new MCQResultViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_mcq_option_result, parent, false));
+        holder.optionState.setButtonDrawable(R.drawable.selector_option_result);
+        return holder;
     }
 
     @Override
@@ -49,9 +52,7 @@ public class MCQResultAdapter extends RecyclerView.Adapter<MCQResultAdapter.MCQR
         int optionIndex = new ArrayList<>(mResult.keySet()).get(position);
         MCQResult mcqResult = mResult.get(optionIndex);
         MCQOption option = arrOptions.get(optionIndex);
-        holder.optionState.setImageResource(mcqResult.isCorrect() ?
-                R.drawable.ic_status_correct :
-                R.drawable.ic_status_incorrect);
+        holder.optionState.setChecked(mcqResult.isCorrect());
         holder.optionText.setText(option.getContent());
         holder.resultReason.setText(XBlockUtils.getTextFromHTML(mcqResult.getMessage()));
         holder.resultReason.setTextColor(ContextCompat.getColor(mContext,
@@ -61,8 +62,8 @@ public class MCQResultAdapter extends RecyclerView.Adapter<MCQResultAdapter.MCQR
                 mcqResult.isCorrect() ? R.color.color_right_answer :
                         R.color.color_wrong_answer));
         holder.reasonIcon.setImageResource(mcqResult.isCorrect() ?
-                R.drawable.ic_results_correct_green :
-                R.drawable.ic_warning_red_18dp);
+                R.drawable.ic_mcq_results_list_correct_green :
+                R.drawable.ic_mcq_result_list_warning_red);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class MCQResultAdapter extends RecyclerView.Adapter<MCQResultAdapter.MCQR
     }
 
     class MCQResultViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView optionState;
+        private final CheckBox optionState;
         private final ImageView reasonIcon;
         private final LinearLayout reasonContainer;
         private final TextView optionText;
@@ -79,7 +80,7 @@ public class MCQResultAdapter extends RecyclerView.Adapter<MCQResultAdapter.MCQR
 
         MCQResultViewHolder(View itemView) {
             super(itemView);
-            optionState = (ImageView) itemView.findViewById(R.id.option_state);
+            optionState = (CheckBox) itemView.findViewById(R.id.option_state);
             optionText = (TextView) itemView.findViewById(R.id.option_text);
             resultReason = (TextView) itemView.findViewById(R.id.reason);
             reasonIcon = (ImageView) itemView.findViewById(R.id.reason_icon);
