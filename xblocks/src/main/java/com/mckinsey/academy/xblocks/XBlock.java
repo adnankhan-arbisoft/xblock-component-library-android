@@ -27,6 +27,7 @@ public class XBlock {
     private WeakReference<Callback> callbackWeakRef;
     private int containerViewId;
     private XBlockInfo xBlockInfo;
+    private Fragment mXBlockFragment = null;
 
     private XBlock(FragmentManager fm, int containerViewId, XBlockInfo xBlockInfo,
                    Callback callback) {
@@ -86,21 +87,31 @@ public class XBlock {
      * @return return XBlock object.
      */
     public XBlock injectXBlock() {
-        Fragment fragment = null;
         if (callbackWeakRef != null && callbackWeakRef.get() != null) {
-            fragment = xBlockInfo.getViewComponent(callbackWeakRef.get());
+            mXBlockFragment = xBlockInfo.getViewComponent(callbackWeakRef.get());
         } else {
-            fragment = xBlockInfo.getViewComponent();
+            mXBlockFragment = xBlockInfo.getViewComponent();
         }
 
         if (fmWeakRef != null && fmWeakRef.get() != null) {
             FragmentTransaction ft = fmWeakRef.get().beginTransaction();
-            ft.replace(containerViewId, fragment).commit();
+            ft.replace(containerViewId, mXBlockFragment).commit();
         } else {
             throw new NullPointerException("FragmentManager can not be null");
         }
 
         return this;
+    }
+
+    /**
+     * Returns the fragment that was injected into the container.
+     * Use this method to get the reference of the Fragment whenever any interaction is
+     * required with the Fragment Object.
+     *
+     * @return
+     */
+    public Fragment getXBlockFragment() {
+        return mXBlockFragment;
     }
 
     /**

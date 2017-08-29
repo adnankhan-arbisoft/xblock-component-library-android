@@ -27,6 +27,7 @@ import com.mckinsey.academy.xblocks.common.Constants;
 import com.mckinsey.academy.xblocks.exception.CallbackCastException;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
+import com.mckinsey.academy.xblocks.utils.XBlockUtils;
 
 import java.util.Observable;
 
@@ -92,7 +93,7 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment {
             mXBlockInfo = (XBlockInfo) args.getSerializable(EXTRA_XBLOCK_INFO);
             if (mXBlockInfo != null) {
                 mTitleTextView.setText(mXBlockInfo.getTitle());
-                mDescTextView.setText(mXBlockInfo.getDetails());
+                mDescTextView.setText(XBlockUtils.getTextFromHTML(mXBlockInfo.getDetails()));
             }
         }
 
@@ -106,7 +107,7 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment {
             public void onClick(View v) {
                 LongAnswerUserInputExpandedFragment frag = LongAnswerUserInputExpandedFragment.getInstance(mUserAnswerEditText.getText().toString());
                 frag.setTargetFragment(LongAnswerXBlockFragment.this, REQ_CODE_LONG_ANSWER_USER_INPUT);
-                frag.show(getActivity().getSupportFragmentManager(), frag.getTag());
+                frag.show(getFragmentManager(), frag.getTag());
             }
         });
 
