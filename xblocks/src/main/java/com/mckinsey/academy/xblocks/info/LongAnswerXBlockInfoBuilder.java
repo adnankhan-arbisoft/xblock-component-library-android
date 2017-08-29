@@ -42,8 +42,10 @@ public class LongAnswerXBlockInfoBuilder {
             throw new InstantiationException("Title can't be empty for Long Answer XBlock");
         }
 
+        // TODO Description could be empty so commenting this for now
         if(TextUtils.isEmpty(mDescription)) {
-            throw new InstantiationException("Description can't be empty for Long Answer XBlock");
+            mDescription = "";
+            // throw new InstantiationException("Description can't be empty for Long Answer XBlock");
         }
 
         return new LongAnswerXBlockInfo(mTitle, mDescription);
