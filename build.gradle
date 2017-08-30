@@ -35,6 +35,6 @@ ext {
     // Having consistent versions between modules can avoid conflicts with behavior.
     supportLibVersion = "26.0.1"
     archLifecycleLibVersion = "1.0.0-alpha9"
-    constraintLayoutLibVersion = "1.0.0-alpha9"
+    constraintLayoutLibVersion = "1.0.2"
     exoPlayerLibVersion = "r1.5.7"
 }
