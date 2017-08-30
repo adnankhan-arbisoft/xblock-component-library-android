@@ -29,16 +29,6 @@ public interface LongAnswerXBlockCallback extends Callback {
         public void onAnswerUpdate(String userAnswer) {
 
         }
-
-        @Override
-        public void onInit() {
-
-        }
-
-        @Override
-        public void onComplete() {
-
-        }
     };
 
 }

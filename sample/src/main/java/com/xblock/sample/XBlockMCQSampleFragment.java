@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mckinsey.academy.xblocks.XBlock;
-import com.mckinsey.academy.xblocks.callbacks.MCQXBlockCallback;
+import com.mckinsey.academy.xblocks.callbacks.MCQResponseCallback;
 import com.mckinsey.academy.xblocks.callbacks.XBlockComponentFragment;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockInfoBuilder;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
+import com.mckinsey.academy.xblocks.model.MCQFeedback;
 import com.mckinsey.academy.xblocks.model.MCQOption;
-import com.mckinsey.academy.xblocks.model.MCQResult;
 import com.mckinsey.academy.xblocks.view.MCQXBlockFragment;
 
 import java.io.Serializable;
@@ -30,7 +30,7 @@ public class XBlockMCQSampleFragment extends Fragment {
     private static final String ARG_QUESTION = "questions";
     private static final String ARG_OPTIONS = "options";
     private static final String ARG_MULTI_SELECT_ENABLE = "isMultiSelectEnable";
-    private MCQXBlockCallback mcqxBlockCallback;
+    private MCQResponseCallback mcqResponseCallback;
     private static final String TITLE = "MCQ XBlock Example";
 
     private String question;
@@ -108,13 +108,14 @@ public class XBlockMCQSampleFragment extends Fragment {
                 if (frag != null && frag instanceof MCQXBlockFragment) {
                     XBlockUserAnswer<List<Integer>> mcqAnswers = ((XBlockComponentFragment) frag)
                             .getUserAnswer();
-                    HashMap<Integer, MCQResult> mcqResultHashMap = new HashMap<>();
+                    HashMap<String, MCQFeedback> mcqResultHashMap = new HashMap<>();
                     List<Integer> selectedOption = mcqAnswers.getUserAnswer();
                     for (Integer position : selectedOption) {
-                        mcqResultHashMap.put(position, new MCQResult(position % 2 == 0,
-                                String.format("Reason %s", position)));
+                        mcqResultHashMap.put(options.get(position).getValue(),
+                                new MCQFeedback(position % 2 == 0, String.format("Reason %s", position)));
                     }
-                    mcqxBlockCallback.onReceiveResult(mcqResultHashMap);
+                    mcqResponseCallback.onFeedbackReceived("An “!” shows that you were not right, either incorrectly selecting the item or incorrectly excluding it.",
+                            mcqResultHashMap);
                 }
 
             }
@@ -123,8 +124,8 @@ public class XBlockMCQSampleFragment extends Fragment {
 
     private void setCallBackReference() {
         Fragment fragment = getChildFragmentManager().findFragmentById(R.id.xblock_container);
-        if (fragment instanceof MCQXBlockCallback) {
-            mcqxBlockCallback = (MCQXBlockCallback) fragment;
+        if (fragment instanceof MCQResponseCallback) {
+            mcqResponseCallback = (MCQResponseCallback) fragment;
         }
     }
 }

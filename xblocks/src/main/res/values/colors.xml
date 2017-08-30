@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_wrong_answer">#F7E0E4</color>
-    <color name="color_right_answer">#E9EEE3</color>
-    <color name="color_wrong_answer_reason">#FF1D44</color>
-    <color name="color_right_answer_reason">#689F33</color>
-    <color name="color_light_blue">#2687DF</color>
+    <!-- DEFAULT COLORS -->
+    <color name="xblockColorPrimary">#2C8CE4</color>
+    <!-- MCQ XBLOCK -->
+    <color name="mcqListDividerColor">#C2C2C2</color>
+    <color name="mcqFeedbackDivider">#D8D8D8</color>
+    <color name="mcqFeedbackIncorrectAnswerBackground">#27FF143D</color>
+    <color name="mcqFeedbackCorrectAnswerBackground">#5B629B2B</color>
+    <color name="mcqFeedbackIncorrectAnswerTextColor">#FFFF143D</color>
+    <color name="mcqFeedbackCorrectAnswerTextColor">#FF629B2B</color>
 </resources>

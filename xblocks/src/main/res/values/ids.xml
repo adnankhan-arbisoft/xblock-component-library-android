@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="option_list_padding">30dp</dimen>
+    <item name="position" type="id"/>
 </resources>

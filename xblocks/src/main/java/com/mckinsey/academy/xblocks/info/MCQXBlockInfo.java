@@ -3,6 +3,7 @@ package com.mckinsey.academy.xblocks.info;
 import android.support.v4.app.Fragment;
 
 import com.mckinsey.academy.xblocks.callbacks.Callback;
+import com.mckinsey.academy.xblocks.callbacks.MCQXBlockCallback;
 import com.mckinsey.academy.xblocks.model.MCQOption;
 import com.mckinsey.academy.xblocks.view.MCQXBlockFragment;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * {@link MCQXBlockInfoBuilder} to create object of VideoXBlockInfo.
  */
 
-public class MCQXBlockInfo extends XBlockInfo {
+public class MCQXBlockInfo extends XBlockInfo<MCQXBlockCallback> {
 
     private String mQuestion;
     private List<MCQOption> arrOptions;
@@ -47,35 +48,12 @@ public class MCQXBlockInfo extends XBlockInfo {
     }
 
     @Override
-    public Fragment getViewComponent(Callback callback) {
+    public Fragment getViewComponent(MCQXBlockCallback callback) {
         MCQXBlockFragment fragment = MCQXBlockFragment.newInstance(this);
         if (callback != null) {
             fragment.setCallback(callback);
         }
         return fragment;
-    }
-
-    /***
-     * Filter out the {@link MCQOption} who's status is  is SELECTED
-     * @return return the list of the Selected Options
-     */
-    public List<Integer> getSelectedOptions() {
-        List<Integer> selectedOptions = new ArrayList<>();
-        for (int i = 0; i < arrOptions.size(); i++) {
-            if (arrOptions.get(i).getOptionState() == MCQOption.SELECTED) {
-                selectedOptions.add(i);
-            }
-        }
-        return selectedOptions;
-    }
-
-    /***
-     * Reset the state of the each {@link MCQOption} to UNSELECTED to retry the Question
-     */
-    public void resetOptionState() {
-        for (MCQOption option : arrOptions) {
-            option.setOptionState(MCQOption.UNSELECTED);
-        }
     }
 
     @Override

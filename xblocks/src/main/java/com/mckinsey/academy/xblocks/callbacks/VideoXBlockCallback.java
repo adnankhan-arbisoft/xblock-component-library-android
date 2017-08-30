@@ -7,6 +7,16 @@ import com.mckinsey.academy.xblocks.exception.PlayingException;
  */
 public interface VideoXBlockCallback extends Callback {
 
+    /**
+     *Called when a XBlock Component get opened or started.
+     */
+    void onInit();
+
+    /**
+     * Called when a XBlock Component get completed.
+     */
+    void onComplete();
+
     void onProgressChange(int progress);
 
     void onError(PlayingException e);
@@ -14,7 +24,6 @@ public interface VideoXBlockCallback extends Callback {
     void onPlay();
 
     void onPause();
-
 
     /*implemented Null object pattern https://en.wikipedia.org/wiki/Null_Object_pattern */
     public static VideoXBlockCallback NULL_CALLBACK = new VideoXBlockCallback() {

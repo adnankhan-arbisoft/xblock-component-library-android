@@ -9,8 +9,10 @@ import java.io.Serializable;
 /**
  * An XBlockInfo object provides the needed data to XBlock UI component. It should be passed to
  * {@link com.mckinsey.academy.xblocks.XBlock XBlock} to create an XBlock component.
+ *
+ * @param <C> Generic type of child class of {@link Callback} that is required by the fragment
  */
-public abstract class XBlockInfo implements Serializable {
+public abstract class XBlockInfo<C extends Callback> implements Serializable {
 
     private String title;
     private String details;
@@ -40,7 +42,7 @@ public abstract class XBlockInfo implements Serializable {
      * @param callback which are required.
      * @return
      */
-    public abstract Fragment getViewComponent(Callback callback);
+    public abstract Fragment getViewComponent(C callback);
 
     /**
      * It should return the corresponding XBlock Fragment component based on information provided
