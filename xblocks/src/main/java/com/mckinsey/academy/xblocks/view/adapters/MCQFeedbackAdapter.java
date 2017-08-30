@@ -22,11 +22,11 @@ public class MCQFeedbackAdapter extends BaseRecyclerAdapter<MCQOption, MCQFeedba
 
     private HashMap<String, MCQFeedback> mFeedbackMap;
     private boolean isMultiSelectEnable = false;
-    private int cardRadius;
+    private int mCardRadius;
 
     public MCQFeedbackAdapter(Context context) {
         super(context);
-        cardRadius = mContext.getResources()
+        mCardRadius = mContext.getResources()
                 .getDimensionPixelSize(R.dimen.mcq_item_list_feedback_card_radius);
     }
 
@@ -42,13 +42,13 @@ public class MCQFeedbackAdapter extends BaseRecyclerAdapter<MCQOption, MCQFeedba
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder = new ViewHolder(this, mInflater.inflate(R.layout.item_mcq_option_feedback, parent, false),
                 isMultiSelectEnable);
-        holder.cardView.setRadius(cardRadius);
+        holder.cardView.setRadius(mCardRadius);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        MCQOption option = mData.get(position);
+        MCQOption option = arrData.get(position);
         MCQFeedback feedback = mFeedbackMap.get(option.getValue());
         holder.optionCheckbox.setChecked(option.isSelected());
         holder.optionText.setText(option.getContent());

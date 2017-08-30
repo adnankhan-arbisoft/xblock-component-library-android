@@ -107,7 +107,7 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback,
             if (item.isSelected()) {
                 return;
             }
-            unSelectAllSelectedOptions();
+            unselectAllSelectedOptions();
             item.setSelected(true);
         }
         if (item.isSelected()) {
@@ -119,7 +119,7 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback,
         mCallback.onOptionSelectionChanged(position, item);
     }
 
-    private void unSelectAllSelectedOptions() {
+    private void unselectAllSelectedOptions() {
         List<MCQOption> arrOptions = getAllOptions();
         for (Integer pos : arrSelectedOptions) {
             arrOptions.get(pos).setSelected(false);
@@ -128,7 +128,7 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback,
         arrSelectedOptions.clear();
     }
 
-    public void unSelectAllOptions() {
+    public void unselectAllOptions() {
         List<MCQOption> arrOptions = getAllOptions();
         for (MCQOption option : arrOptions) {
             option.setSelected(false);
@@ -158,7 +158,7 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback,
     public void onRetakeQuiz() {
         feedbackMessage.setVisibility(View.GONE);
         feedbackDivider.setVisibility(View.GONE);
-        unSelectAllOptions();
+        unselectAllOptions();
         setupListItemQuizDecorators();
         mcqOptionsAdapter.notifyDataSetChanged();
         optionsView.setAdapter(mcqOptionsAdapter);

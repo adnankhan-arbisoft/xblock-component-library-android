@@ -2,6 +2,7 @@ package com.mckinsey.academy.xblocks.view.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -36,8 +37,7 @@ public class MCQOptionsAdapter extends BaseRecyclerAdapter<MCQOption, MCQOptions
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.itemView.setTag(R.id.position, position);
-        holder.itemView.setTag(R.id.position, position);
-        MCQOption mcqOption = mData.get(position);
+        MCQOption mcqOption = arrData.get(position);
         holder.optionText.setText(XBlockUtils.getTextFromHTML(mcqOption.getContent()));
         holder.optionCheckbox.setChecked(mcqOption.isSelected());
     }

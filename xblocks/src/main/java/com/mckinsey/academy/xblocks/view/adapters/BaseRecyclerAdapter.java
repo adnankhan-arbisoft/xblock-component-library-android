@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class BaseRecyclerAdapter<M, VH extends BaseRecyclerAdapter.BaseViewHolder>
         extends RecyclerView.Adapter<VH> {
 
-    protected List<M> mData;
+    protected List<M> arrData;
     protected Context mContext;
     protected LayoutInflater mInflater;
     @Nullable
@@ -30,7 +30,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseRecyclerAdapter.Base
 
     public BaseRecyclerAdapter(Context context, @Nullable List<M> data) {
         mContext = context;
-        mData = data == null ? new ArrayList<M>() : data;
+        arrData = (data == null) ? new ArrayList<M>() : data;
         mInflater = LayoutInflater.from(mContext);
     }
 
@@ -48,16 +48,16 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseRecyclerAdapter.Base
     }
 
     public boolean isEmpty() {
-        return mData.isEmpty();
+        return arrData.isEmpty();
     }
 
     @NonNull
     public final List<M> getData() {
-        return mData;
+        return arrData;
     }
 
     public M getItem(int position) {
-        return position >= 0 && position < mData.size() ? mData.get(position) : null;
+        return (position >= 0 && position < arrData.size()) ? arrData.get(position) : null;
     }
 
     @Override
@@ -66,11 +66,11 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseRecyclerAdapter.Base
     }
 
     public int getActualSize() {
-        return mData.size();
+        return arrData.size();
     }
 
     public void swap(@NonNull List<M> data) {
-        mData = data;
+        arrData = data;
     }
 
     public void setData(@NonNull List<M> data) {
@@ -79,11 +79,11 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseRecyclerAdapter.Base
     }
 
     public void clear() {
-        mData.clear();
+        arrData.clear();
     }
 
     public void addAll(@NonNull List<M> data) {
-        mData.addAll(data);
+        arrData.addAll(data);
     }
 
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {

@@ -2,7 +2,6 @@ package com.xblock.sample;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +30,7 @@ public class XBlockMCQSampleFragment extends Fragment {
     private static final String ARG_QUESTION = "questions";
     private static final String ARG_OPTIONS = "options";
     private static final String ARG_MULTI_SELECT_ENABLE = "isMultiSelectEnable";
-    private MCQResponseCallback MCQResponseCallback;
+    private MCQResponseCallback mcqResponseCallback;
     private static final String TITLE = "MCQ XBlock Example";
 
     private String question;
@@ -115,7 +114,7 @@ public class XBlockMCQSampleFragment extends Fragment {
                         mcqResultHashMap.put(options.get(position).getValue(),
                                 new MCQFeedback(position % 2 == 0, String.format("Reason %s", position)));
                     }
-                    MCQResponseCallback.onFeedbackReceived("An “!” shows that you were not right, either incorrectly selecting the item or incorrectly excluding it.",
+                    mcqResponseCallback.onFeedbackReceived("An “!” shows that you were not right, either incorrectly selecting the item or incorrectly excluding it.",
                             mcqResultHashMap);
                 }
 
@@ -126,7 +125,7 @@ public class XBlockMCQSampleFragment extends Fragment {
     private void setCallBackReference() {
         Fragment fragment = getChildFragmentManager().findFragmentById(R.id.xblock_container);
         if (fragment instanceof MCQResponseCallback) {
-            MCQResponseCallback = (MCQResponseCallback) fragment;
+            mcqResponseCallback = (MCQResponseCallback) fragment;
         }
     }
 }
