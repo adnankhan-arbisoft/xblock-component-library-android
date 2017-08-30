@@ -1,8 +1,8 @@
 package com.mckinsey.academy.xblocks.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,21 +10,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mckinsey.academy.xblocks.R;
-import com.mckinsey.academy.xblocks.callbacks.Callback;
+import com.mckinsey.academy.xblocks.callbacks.MCQResponseCallback;
 import com.mckinsey.academy.xblocks.callbacks.MCQXBlockCallback;
 import com.mckinsey.academy.xblocks.info.MCQXBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
-import com.mckinsey.academy.xblocks.listener.RecyclerViewItemSelectListener;
+import com.mckinsey.academy.xblocks.model.MCQFeedback;
 import com.mckinsey.academy.xblocks.model.MCQOption;
-import com.mckinsey.academy.xblocks.model.MCQResult;
 import com.mckinsey.academy.xblocks.utils.XBlockUtils;
+import com.mckinsey.academy.xblocks.view.adapters.BaseRecyclerAdapter;
 import com.mckinsey.academy.xblocks.view.adapters.MCQOptionsAdapter;
-import com.mckinsey.academy.xblocks.view.adapters.MCQResultAdapter;
+import com.mckinsey.academy.xblocks.view.adapters.MCQFeedbackAdapter;
+import com.mckinsey.academy.xblocks.view.adapters.decorators.MCQListItemDecorators;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Observable;
 
 import static com.mckinsey.academy.xblocks.common.Constants.EXTRA_XBLOCK_INFO;
 
@@ -32,15 +33,18 @@ import static com.mckinsey.academy.xblocks.common.Constants.EXTRA_XBLOCK_INFO;
  * MCQ and MRQ XBlock Fragment. Activity/Fragment in which this functionality is required
  * needs to add that this fragment as there child fragment
  */
+public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback, List<MCQOption>>
+        implements BaseRecyclerAdapter.OnItemClickListener<MCQOption>, MCQResponseCallback {
 
-public class MCQXBlockFragment extends LifecycleOwnerFragment
-        implements RecyclerViewItemSelectListener, MCQXBlockCallback {
+    private MCQXBlockInfo xBlockInfo;
+    private MCQOptionsAdapter mcqOptionsAdapter;
+    private ArrayList<Integer> arrSelectedOptions;
+    private MCQListItemDecorators mcqListItemDecorators;
 
-    private static final String TAG = VideoXBlockFragment.class.getSimpleName();
-    private TextView mQuestionTitle;
-    private RecyclerView mOptionsRecyclerView;
-    private MCQOptionsAdapter mMcqOptionsAdapter;
-    private MCQXBlockInfo mXBlockInfo;
+    private TextView questionView;
+    private TextView feedbackMessage;
+    private View feedbackDivider;
+    private RecyclerView optionsView;
 
     public static MCQXBlockFragment newInstance(XBlockInfo xBlockInfo) {
         MCQXBlockFragment fragment = new MCQXBlockFragment();
@@ -50,17 +54,37 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment
         return fragment;
     }
 
+    @NonNull
+    @Override
+    public MCQXBlockCallback getNullCallback() {
+        return MCQXBlockCallback.NULL_CALLBACK;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null) {
+            xBlockInfo = (MCQXBlockInfo) args.getSerializable(EXTRA_XBLOCK_INFO);
+        }
+        if (xBlockInfo == null) {
+            throw new RuntimeException("XBlockInfo cannot be null");
+        }
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Bundle args = getArguments();
-        mXBlockInfo = (MCQXBlockInfo) args.getSerializable(EXTRA_XBLOCK_INFO);
-        mQuestionTitle.setText(XBlockUtils.getTextFromHTML(mXBlockInfo.getQuestion()));
-        mMcqOptionsAdapter = new MCQOptionsAdapter();
-        mMcqOptionsAdapter.setItemSelectListener(this);
-        mOptionsRecyclerView.setAdapter(mMcqOptionsAdapter);
-        mMcqOptionsAdapter.setMultiSelectEnable(mXBlockInfo.isMultiSelectEnable());
-        mMcqOptionsAdapter.setOptions(mXBlockInfo.getOptions());
+        arrSelectedOptions = new ArrayList<>();
+        mcqListItemDecorators = new MCQListItemDecorators(getContext());
+
+        questionView.setText(XBlockUtils.getTextFromHTML(xBlockInfo.getQuestion()));
+        mcqOptionsAdapter = new MCQOptionsAdapter(getContext());
+        mcqOptionsAdapter.setData(getAllOptions());
+        mcqOptionsAdapter.setOnItemClickListener(this);
+        mcqOptionsAdapter.setMultiSelectEnable(xBlockInfo.isMultiSelectEnable());
+        optionsView.setAdapter(mcqOptionsAdapter);
+        setupListItemQuizDecorators();
     }
 
     @Nullable
@@ -68,68 +92,76 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_xblock_mcq, container, false);
-        mQuestionTitle = (TextView) view.findViewById(R.id.question_title);
-        mOptionsRecyclerView = (RecyclerView) view.findViewById(R.id.options_list);
-        mOptionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        questionView = view.findViewById(R.id.question_view);
+        feedbackMessage = view.findViewById(R.id.feedback_message);
+        feedbackDivider = view.findViewById(R.id.feedback_divider);
+        optionsView = view.findViewById(R.id.options_view);
         return view;
     }
 
     @Override
-    public void setCallback(Callback callback) {
-        // Nothing is required to implement in this callback
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        // No implementation required here
-    }
-
-    @Override
-    public void onItemSelect(int position) {
-        if (mXBlockInfo.isMultiSelectEnable()) {
-            mXBlockInfo.getOptions().get(position).toggleState();
+    public void onItemClick(BaseRecyclerAdapter adapter, int position, MCQOption item) {
+        if (xBlockInfo.isMultiSelectEnable()) {
+            item.toggleState();
         } else {
-            mXBlockInfo.resetOptionState();
-            mXBlockInfo.getOptions().get(position).setOptionState(MCQOption.SELECTED);
+            if (item.isSelected()) {
+                return;
+            }
+            unSelectAllSelectedOptions();
+            item.setSelected(true);
         }
-        mMcqOptionsAdapter.setOptions(mXBlockInfo.getOptions());
+        if (item.isSelected()) {
+            arrSelectedOptions.add(position);
+        } else {
+            arrSelectedOptions.remove(Integer.valueOf(position));
+        }
+        mcqOptionsAdapter.notifyItemChanged(position);
+        mCallback.onOptionSelectionChanged(position, item);
     }
 
-    /***
-     * Receive results about the selected options i.e either the option is correct or incorrect
-     * from the app using the XBlock
-     * @param result SparseBooleanArray store result against the options position
-     */
-    @Override
-    public void onReceiveResult(HashMap<Integer, MCQResult> result) {
-        mOptionsRecyclerView.setPadding(0, 0, 0, 0);
-        MCQResultAdapter mcqResultAdapter = new MCQResultAdapter();
-        mcqResultAdapter.setOptions(mXBlockInfo.getOptions());
-        mcqResultAdapter.setResult(result);
-        mOptionsRecyclerView.setAdapter(mcqResultAdapter);
+    private void unSelectAllSelectedOptions() {
+        List<MCQOption> arrOptions = getAllOptions();
+        for (Integer pos : arrSelectedOptions) {
+            arrOptions.get(pos).setSelected(false);
+            mcqOptionsAdapter.notifyItemChanged(pos);
+        }
+        arrSelectedOptions.clear();
     }
 
-    /***
-     * Call this function if the user wants to retry a question, it resets the options state to
-     * UnSelected and updates the adapter
-     */
-    @Override
-    public void onRetry() {
-        int padding = (int) getResources().getDimension(R.dimen.option_list_padding);
-        mOptionsRecyclerView.setPadding(padding, padding, padding, padding);
-        mMcqOptionsAdapter.setOptions(mXBlockInfo.getOptions());
-        mXBlockInfo.resetOptionState();
-        mOptionsRecyclerView.setAdapter(mMcqOptionsAdapter);
+    public void unSelectAllOptions() {
+        List<MCQOption> arrOptions = getAllOptions();
+        for (MCQOption option : arrOptions) {
+            option.setSelected(false);
+        }
+        arrSelectedOptions.clear();
     }
 
     @Override
-    public void onInit() {
-        // Nothing is required to do in this function
+    public List<MCQOption> getAllOptions() {
+        return xBlockInfo.getOptions();
     }
 
     @Override
-    public void onComplete() {
-        // Nothing is required to do in this function
+    public void onFeedbackReceived(String message, HashMap<String, MCQFeedback> feedback) {
+        feedbackMessage.setVisibility(View.VISIBLE);
+        feedbackDivider.setVisibility(View.VISIBLE);
+        feedbackMessage.setText(message);
+        MCQFeedbackAdapter mcqFeedbackAdapter = new MCQFeedbackAdapter(getContext());
+        mcqFeedbackAdapter.setMultiSelectEnable(xBlockInfo.isMultiSelectEnable());
+        mcqFeedbackAdapter.setData(xBlockInfo.isMultiSelectEnable() ? getAllOptions() : getSelectedOptions());
+        mcqFeedbackAdapter.setFeedback(feedback);
+        setupListItemFeedbackDecorators();
+        optionsView.setAdapter(mcqFeedbackAdapter);
+    }
+
+    @Override
+    public void onRetakeQuiz() {
+        feedbackMessage.setVisibility(View.GONE);
+        feedbackDivider.setVisibility(View.GONE);
+        unSelectAllOptions();
+        setupListItemQuizDecorators();
+        mcqOptionsAdapter.notifyDataSetChanged();
+        optionsView.setAdapter(mcqOptionsAdapter);
     }
 
     /***
@@ -137,9 +169,36 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment
      * @return List of selected option's position wrapped inside {@link XBlockUserAnswer}
      */
     @Override
-    public XBlockUserAnswer getUserAnswer() {
-        XBlockUserAnswer<List<Integer>> xBlockUserAnswer = new XBlockUserAnswer<>();
-        xBlockUserAnswer.setUserAnswer(mXBlockInfo.getSelectedOptions());
+    public XBlockUserAnswer<List<MCQOption>> getUserAnswer() {
+        XBlockUserAnswer<List<MCQOption>> xBlockUserAnswer = new XBlockUserAnswer<>();
+        xBlockUserAnswer.setUserAnswer(getSelectedOptions());
         return xBlockUserAnswer;
+    }
+
+    /***
+     * Filter out the {@link MCQOption} who's status is  is SELECTED
+     * @return return the list of the Selected Options
+     */
+    public List<MCQOption> getSelectedOptions() {
+        List<MCQOption> arrSelected = new ArrayList<>();
+        List<MCQOption> arrOptions = getAllOptions();
+        for (MCQOption option : arrOptions) {
+            if (option.isSelected()) {
+                arrSelected.add(option);
+            }
+        }
+        return arrSelected;
+    }
+
+    public void setupListItemQuizDecorators() {
+        optionsView.removeItemDecoration(mcqListItemDecorators.getFeedbackDecorator());
+        optionsView.addItemDecoration(mcqListItemDecorators.getLineDivider());
+        optionsView.addItemDecoration(mcqListItemDecorators.getSpace());
+    }
+
+    public void setupListItemFeedbackDecorators() {
+        optionsView.removeItemDecoration(mcqListItemDecorators.getLineDivider());
+        optionsView.removeItemDecoration(mcqListItemDecorators.getSpace());
+        optionsView.addItemDecoration(mcqListItemDecorators.getFeedbackDecorator());
     }
 }

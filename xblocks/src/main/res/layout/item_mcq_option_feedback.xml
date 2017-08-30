@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <include layout="@layout/item_mcq_option"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/feedback_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mcq_item_list_feedback_margin_top"
+        android:paddingBottom="@dimen/mcq_item_list_feedback_padding_vertical"
+        android:paddingLeft="@dimen/mcq_item_list_feedback_padding_horizontal"
+        android:paddingRight="@dimen/mcq_item_list_feedback_padding_horizontal"
+        android:paddingTop="@dimen/mcq_item_list_feedback_padding_vertical"
+        tools:background="@color/mcqFeedbackIncorrectAnswerBackground"
+        tools:ignore="RtlHardcoded">
+
+        <ImageView
+            android:id="@+id/feedback_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBaseline_toBaselineOf="@+id/feedback_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_mcq_feedback_list_error_red"/>
+
+        <TextView
+            android:id="@+id/feedback_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/mcq_item_list_feedback_padding_horizontal"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:lineSpacingMultiplier="1.1"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/feedback_icon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="This answer should not have been selected. An immediate response to an E. Coli outbreak is not a situation that calls for divergent thinking."
+            tools:textColor="@color/mcqFeedbackIncorrectAnswerTextColor"/>
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

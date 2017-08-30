@@ -3,13 +3,14 @@ package com.mckinsey.academy.xblocks.info;
 import android.support.v4.app.Fragment;
 
 import com.mckinsey.academy.xblocks.callbacks.Callback;
+import com.mckinsey.academy.xblocks.callbacks.VideoXBlockCallback;
 import com.mckinsey.academy.xblocks.view.VideoXBlockFragment;
 
 /**
  * VideoXBlockInfo contains all the information required for VideoXBlockComponent. Use
  * {@link VideoXBlockInfoBuilder} to create object of VideoXBlockInfo.
  */
-public class VideoXBlockInfo extends XBlockInfo {
+public class VideoXBlockInfo extends XBlockInfo<VideoXBlockCallback> {
 
     private String embedId;
     private String pcode;
@@ -40,7 +41,7 @@ public class VideoXBlockInfo extends XBlockInfo {
     }
 
     @Override
-    public Fragment getViewComponent(Callback callback) {
+    public Fragment getViewComponent(VideoXBlockCallback callback) {
         VideoXBlockFragment fragment = VideoXBlockFragment.newInstance(this);
         if (callback != null) {
             fragment.setCallback(callback);

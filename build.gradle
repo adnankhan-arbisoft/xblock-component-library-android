@@ -22,3 +22,19 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+// This block encapsulates custom properties and makes them available to all
+// modules in the project.
+ext {
+    // The following are only a few examples of the types of properties one can define.
+    compileSdkVersion = 26
+    buildToolsVersion = "26.0.1"
+    minSdkVersion = 19
+    targetSdkVersion = 26
+    // Properties to specify versions for dependencies can also be added here.
+    // Having consistent versions between modules can avoid conflicts with behavior.
+    supportLibVersion = "26.0.1"
+    archLifecycleLibVersion = "1.0.0-alpha9"
+    constraintLayoutLibVersion = "1.0.0-alpha9"
+    exoPlayerLibVersion = "r1.5.7"
+}

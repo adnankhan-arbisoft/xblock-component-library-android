@@ -1,10 +1,8 @@
 package com.mckinsey.academy.xblocks.view;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mckinsey.academy.xblocks.R;
-import com.mckinsey.academy.xblocks.callbacks.Callback;
 import com.mckinsey.academy.xblocks.callbacks.VideoXBlockCallback;
-import com.mckinsey.academy.xblocks.exception.CallbackCastException;
 import com.mckinsey.academy.xblocks.exception.PlayingException;
 import com.mckinsey.academy.xblocks.info.VideoXBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
@@ -32,20 +28,18 @@ import com.ooyala.android.notifications.BitrateChangedNotificationInfo;
 import com.ooyala.android.ui.OoyalaPlayerLayoutController;
 
 import java.util.Observable;
+import java.util.Observer;
 
-import static com.mckinsey.academy.xblocks.common.Constants.ERROR_MSG_CALLBACK_NOT_FOUND;
 import static com.mckinsey.academy.xblocks.common.Constants.EXTRA_XBLOCK_INFO;
 import static com.mckinsey.academy.xblocks.common.Constants.X_BLOCK_TAG;
-
 
 /**
  * Ooyala Video XBlock Component. It Includes Ooyala player and component description UI.
  */
-public class VideoXBlockFragment extends LifecycleOwnerFragment {
+public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallback, Void>
+        implements Observer {
 
     private static final String TAG = VideoXBlockFragment.class.getSimpleName();
-
-    private VideoXBlockCallback mCallback;
 
     protected ObservableOoyalaPlayer player;
     protected OoyalaPlayerLayoutController playerLayoutController;
@@ -64,21 +58,10 @@ public class VideoXBlockFragment extends LifecycleOwnerFragment {
         return fragment;
     }
 
+    @NonNull
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (mCallback == null) {
-            Fragment parent = getParentFragment();
-            if (parent != null && parent instanceof VideoXBlockCallback) {
-                mCallback = (VideoXBlockCallback) parent;
-            } else if (context instanceof VideoXBlockCallback) {
-                mCallback = (VideoXBlockCallback) context;
-            } else {
-                Log.e(X_BLOCK_TAG, ERROR_MSG_CALLBACK_NOT_FOUND);
-                mCallback = VideoXBlockCallback.NULL_CALLBACK;
-            }
-        }
+    public VideoXBlockCallback getNullCallback() {
+        return VideoXBlockCallback.NULL_CALLBACK;
     }
 
     @Override
@@ -114,15 +97,6 @@ public class VideoXBlockFragment extends LifecycleOwnerFragment {
         playerLayout = (OoyalaPlayerLayout) view.findViewById(R.id.player_layout);
 
         return view;
-    }
-
-    @Override
-    public void setCallback(@NonNull Callback callback) throws CallbackCastException {
-        try {
-            mCallback = (VideoXBlockCallback) callback;
-        } catch (ClassCastException e) {
-            throw new CallbackCastException("VideoXBlockCallback not passed");
-        }
     }
 
     /**
@@ -300,7 +274,7 @@ public class VideoXBlockFragment extends LifecycleOwnerFragment {
 
 
     @Override
-    public XBlockUserAnswer getUserAnswer() {
+    public XBlockUserAnswer<Void> getUserAnswer() {
         return null;
     }
 }

@@ -3,13 +3,14 @@ package com.mckinsey.academy.xblocks.info;
 import android.support.v4.app.Fragment;
 
 import com.mckinsey.academy.xblocks.callbacks.Callback;
+import com.mckinsey.academy.xblocks.callbacks.LongAnswerXBlockCallback;
 import com.mckinsey.academy.xblocks.view.LongAnswerXBlockFragment;
 
 /**
  * Data class for Long-Answer XBlock
  */
 
-public class LongAnswerXBlockInfo extends XBlockInfo {
+public class LongAnswerXBlockInfo extends XBlockInfo<LongAnswerXBlockCallback> {
 
     private String mTitle;
     private String mDescription;
@@ -43,7 +44,7 @@ public class LongAnswerXBlockInfo extends XBlockInfo {
     }
 
     @Override
-    public Fragment getViewComponent(Callback callback) {
+    public Fragment getViewComponent(LongAnswerXBlockCallback callback) {
         LongAnswerXBlockFragment fragment = LongAnswerXBlockFragment.getInstance(this);
         if (callback != null) {
             fragment.setCallback(callback);

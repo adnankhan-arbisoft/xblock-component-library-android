@@ -98,21 +98,6 @@ public class XBlockLongAnswerSampleFragment extends Fragment implements LongAnsw
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
-    public void onInit() {
-
-    }
-
-    @Override
-    public void onComplete() {
-
-    }
-
-    @Override
     public void onAnswerFieldUpdate(boolean isEmpty) {
         if (btnSubmit != null) {
             if (isEmpty && btnSubmit.isEnabled()) {

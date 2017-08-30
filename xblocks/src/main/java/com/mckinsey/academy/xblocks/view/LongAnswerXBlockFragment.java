@@ -1,17 +1,14 @@
 package com.mckinsey.academy.xblocks.view;
 
 import android.app.Activity;
-import android.arch.lifecycle.LifecycleRegistry;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,15 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mckinsey.academy.xblocks.R;
-import com.mckinsey.academy.xblocks.callbacks.Callback;
 import com.mckinsey.academy.xblocks.callbacks.LongAnswerXBlockCallback;
-import com.mckinsey.academy.xblocks.common.Constants;
-import com.mckinsey.academy.xblocks.exception.CallbackCastException;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 import com.mckinsey.academy.xblocks.utils.XBlockUtils;
-
-import java.util.Observable;
 
 import static com.mckinsey.academy.xblocks.view.LongAnswerUserInputExpandedFragment.ARGS_KEY_USER_INPUT;
 
@@ -37,14 +29,12 @@ import static com.mckinsey.academy.xblocks.view.LongAnswerUserInputExpandedFragm
  * UI Component Fragment for XBlock Long-Answer Problem Builder
  */
 
-public class LongAnswerXBlockFragment extends LifecycleOwnerFragment {
+public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerXBlockCallback, String> {
 
     private static final String TAG = LongAnswerXBlockFragment.class.getSimpleName();
     private static final String EXTRA_XBLOCK_INFO = "xblock_info";
 
     public static final int REQ_CODE_LONG_ANSWER_USER_INPUT = 100;
-
-    private LongAnswerXBlockCallback mCallback = null;
 
     private EditText mUserAnswerEditText = null;
     private TextView mTitleTextView = null;
@@ -69,6 +59,12 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment {
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    @NonNull
+    @Override
+    public LongAnswerXBlockCallback getNullCallback() {
+        return LongAnswerXBlockCallback.NULL_CALLBACK;
     }
 
     @Nullable
@@ -138,25 +134,6 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        // setup callback listener
-        if (mCallback == null) {
-            Fragment parentFragment = getParentFragment();
-            if (parentFragment != null && parentFragment instanceof LongAnswerXBlockCallback) {
-                mCallback = (LongAnswerXBlockCallback) parentFragment;
-            } else if (context instanceof LongAnswerXBlockCallback) {
-                mCallback = (LongAnswerXBlockCallback) context;
-            } else {
-                // error case
-                Log.e(Constants.X_BLOCK_TAG, Constants.ERROR_MSG_CALLBACK_NOT_FOUND);
-                mCallback = LongAnswerXBlockCallback.NULL_CALLBACK;
-            }
-        }
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -186,26 +163,7 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment {
     }
 
     @Override
-    public void setCallback(@NonNull Callback callback) throws CallbackCastException {
-        try {
-            mCallback = (LongAnswerXBlockCallback) callback;
-        } catch (ClassCastException e) {
-            throw new CallbackCastException("Invalid callback, callback should be an instance of LongAnswerXBlockCallback");
-        }
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-
-    }
-
-    @Override
-    public LifecycleRegistry getLifecycle() {
-        return super.getLifecycle();
-    }
-
-    @Override
-    public XBlockUserAnswer getUserAnswer() {
+    public XBlockUserAnswer<String> getUserAnswer() {
         XBlockUserAnswer<String> freeTextUserAnser = new XBlockUserAnswer<>();
         if (mUserAnswerEditText != null) {
             freeTextUserAnser.setUserAnswer(mUserAnswerEditText.getText().toString());
