@@ -8,7 +8,7 @@
 
     <!-- Title & Description View -->
     <android.support.v7.widget.CardView
-        android:id="@+id/question_card_view"
+        android:id="@+id/question_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="28dp"
@@ -81,42 +81,4 @@
             android:scaleType="fitXY"
             android:src="@drawable/ic_field_expand"/>
     </FrameLayout>
-    
-    <!-- Bottom View to show feedback message -->
-    <LinearLayout
-        android:id="@+id/feedback_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#F7F7F7"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/feedback_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:maxLines="1"
-            android:text="Thank you!"
-            android:gravity="center_horizontal"
-            android:textColor="@android:color/black"
-            android:textSize="28sp"
-            android:textStyle="normal"
-            android:layout_marginTop="20dp"/>
-
-        <TextView
-            android:id="@+id/feedback_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="16dp"
-            android:inputType="textMultiLine"
-            android:text="Placeholder text for positive feedback when a user has successfully completed the component, all cards have been actioned."
-            android:gravity="center_horizontal"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="normal"
-            android:layout_marginTop="20dp"/>
-
-    </LinearLayout>
 </LinearLayout>
