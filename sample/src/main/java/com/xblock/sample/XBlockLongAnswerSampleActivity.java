@@ -24,7 +24,8 @@ public class XBlockLongAnswerSampleActivity extends AppCompatActivity {
                 "What do you think went wrong? \n\n" +
                 "In the field below, write one or two sentences describing what you think Brain did wrong. When you are " +
                 "finished, choose \'Submit\' to compare your response to an experts.";
-        fragment = XBlockLongAnswerSampleFragment.newInstance(title, description);
+        String sampleUserAnswer = "This is the default text for user answer.\n";
+        fragment = XBlockLongAnswerSampleFragment.newInstance(title, description, sampleUserAnswer);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
     }
 }
