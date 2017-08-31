@@ -35,7 +35,7 @@ import static com.mckinsey.academy.xblocks.view.LongAnswerUserInputExpandedFragm
  * UI Component Fragment for XBlock Long-Answer Problem Builder
  */
 
-public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerXBlockCallback, String> {
+public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerXBlockCallback, String, Void> {
 
     private static final String TAG = LongAnswerXBlockFragment.class.getSimpleName();
     private static final String EXTRA_XBLOCK_INFO = "xblock_info";
@@ -217,7 +217,7 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerX
     }
 
     @Override
-    public void setSubmitResponse(XBlockSubmitResponse xBlockSubmitResponse) {
+    public void setSubmitResponse(XBlockSubmitResponse<Void> xBlockSubmitResponse) {
         // TODO add code to set feedback and update layout
         if (xBlockSubmitResponse == null) {
             Toast.makeText(getActivity(), "Submit Response is not initialized.", Toast.LENGTH_SHORT).show();

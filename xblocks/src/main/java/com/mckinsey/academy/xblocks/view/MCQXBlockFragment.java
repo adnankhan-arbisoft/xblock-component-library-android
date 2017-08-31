@@ -34,7 +34,7 @@ import static com.mckinsey.academy.xblocks.common.Constants.EXTRA_XBLOCK_INFO;
  * MCQ and MRQ XBlock Fragment. Activity/Fragment in which this functionality is required
  * needs to add that this fragment as there child fragment
  */
-public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback, List<MCQOption>>
+public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback, List<MCQOption>, Void>
         implements BaseRecyclerAdapter.OnItemClickListener<MCQOption>, MCQResponseCallback {
 
     private MCQXBlockInfo xBlockInfo;
@@ -204,7 +204,7 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback,
     }
 
     @Override
-    public void setSubmitResponse(XBlockSubmitResponse xBlockSubmitResponse) {
+    public void setSubmitResponse(XBlockSubmitResponse<Void> xBlockSubmitResponse) {
         // TODO add code to handle submit api response and corresponding update UI
     }
 

@@ -8,10 +8,10 @@ import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
  *
  * @param <T> Generic type of answer that should be returned by the XBlock
  */
-public interface XBlockComponentFragment<T> {
+public interface XBlockComponentFragment<T, U> {
 
     XBlockUserAnswer<T> getUserAnswer();
 
-    void setSubmitResponse(XBlockSubmitResponse xBlockSubmitResponse);
+    void setSubmitResponse(XBlockSubmitResponse<U> xBlockSubmitResponse);
 
 }

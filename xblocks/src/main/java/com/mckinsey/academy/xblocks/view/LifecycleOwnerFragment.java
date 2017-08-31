@@ -20,8 +20,8 @@ import static com.mckinsey.academy.xblocks.common.Constants.X_BLOCK_TAG;
 /**
  * Fragment with {@link LifecycleRegistryOwner} implementation.
  */
-public abstract class LifecycleOwnerFragment<C extends Callback, A> extends Fragment
-        implements LifecycleRegistryOwner, XBlockComponentFragment<A> {
+public abstract class LifecycleOwnerFragment<C extends Callback, A, V> extends Fragment
+        implements LifecycleRegistryOwner, XBlockComponentFragment<A, V> {
 
     private LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
 
