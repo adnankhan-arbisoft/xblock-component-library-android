@@ -12,6 +12,7 @@ public class LongAnswerXBlockInfoBuilder {
 
     private String mTitle;
     private String mDescription;
+    private String mUserAnswer;// contains previous user answer if any
 
     /**
      * Method-Chaining for build object of LongAnswerXBlockBuilder
@@ -33,6 +34,11 @@ public class LongAnswerXBlockInfoBuilder {
         return this;
     }
 
+    public LongAnswerXBlockInfoBuilder setUserAnswer(String userAnswer) {
+        this.mUserAnswer = userAnswer;
+        return this;
+    }
+
     /**
      * Returns intance of LongAnswerXBlockInfo composed with title and description.
      * @return
@@ -48,6 +54,10 @@ public class LongAnswerXBlockInfoBuilder {
             // throw new InstantiationException("Description can't be empty for Long Answer XBlock");
         }
 
-        return new LongAnswerXBlockInfo(mTitle, mDescription);
+        if (TextUtils.isEmpty(mUserAnswer)) {
+            this.mUserAnswer = "";
+        }
+
+        return new LongAnswerXBlockInfo(mTitle, mDescription, mUserAnswer);
     }
 }
