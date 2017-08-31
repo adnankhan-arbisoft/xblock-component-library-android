@@ -12,13 +12,19 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mckinsey.academy.xblocks.R;
 import com.mckinsey.academy.xblocks.callbacks.LongAnswerXBlockCallback;
+import com.mckinsey.academy.xblocks.common.Constants;
+import com.mckinsey.academy.xblocks.exception.CallbackCastException;
+import com.mckinsey.academy.xblocks.info.LongAnswerXBlockInfo;
+import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 import com.mckinsey.academy.xblocks.utils.XBlockUtils;
@@ -29,7 +35,7 @@ import static com.mckinsey.academy.xblocks.view.LongAnswerUserInputExpandedFragm
  * UI Component Fragment for XBlock Long-Answer Problem Builder
  */
 
-public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerXBlockCallback, String> {
+public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerXBlockCallback, String, Void> {
 
     private static final String TAG = LongAnswerXBlockFragment.class.getSimpleName();
     private static final String EXTRA_XBLOCK_INFO = "xblock_info";
@@ -40,10 +46,14 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerX
     private TextView mTitleTextView = null;
     private TextView mDescTextView = null;
     private ImageView mExpandInputFieldImageView = null;
+    private View mQuestionCardView = null;
     private View mUserInputContainerView = null;
+    private View mFeedbackView = null;
+    private TextView mFeedbackTitleTextView = null;
+    private TextView mFeedbackMessageTextView = null;
 
     private BottomSheetBehavior mBottomSheetBehavior;
-    private XBlockInfo mXBlockInfo;
+    private LongAnswerXBlockInfo mXBlockInfo;
 
     /**
      * Creates a new instance of the {@code {@link LongAnswerXBlockFragment}}, set the arguments
@@ -82,20 +92,25 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerX
         mDescTextView = (TextView)view.findViewById(R.id.view_description);
         mUserAnswerEditText = (EditText) view.findViewById(R.id.view_user_answer);
         mExpandInputFieldImageView = (ImageView) view.findViewById(R.id.btn_expand);
+        // container views
         mUserInputContainerView = view.findViewById(R.id.user_answer_field_container);
+        mQuestionCardView = view.findViewById(R.id.question_card_view);
+        mFeedbackView = view.findViewById(R.id.feedback_view);
+        mFeedbackTitleTextView = (TextView) view.findViewById(R.id.feedback_title);
+        mFeedbackMessageTextView = (TextView) view.findViewById(R.id.feedback_message);
 
         Bundle args = getArguments();
         if (args != null) {
-            mXBlockInfo = (XBlockInfo) args.getSerializable(EXTRA_XBLOCK_INFO);
+            mXBlockInfo = (LongAnswerXBlockInfo) args.getSerializable(EXTRA_XBLOCK_INFO);
             if (mXBlockInfo != null) {
                 mTitleTextView.setText(mXBlockInfo.getTitle());
                 mDescTextView.setText(XBlockUtils.getTextFromHTML(mXBlockInfo.getDetails()));
+                setPreAddedUserAnswer(mXBlockInfo.getUserAnswer());
             }
         }
 
         // hiding keyboard
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        XBlockUtils.hideSoftInput(getActivity(), getView());
 
         // Click listener to expand the user input view
         mExpandInputFieldImageView.setOnClickListener(new View.OnClickListener(){
@@ -162,6 +177,36 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerX
         }
     }
 
+    private void showFeedbackMessage(boolean success, String feedbackTitle, String feedbackMessage) {
+        if (!feedbackTitle.isEmpty()) {
+            mFeedbackTitleTextView.setText(feedbackTitle);
+        }
+        if (!feedbackMessage.isEmpty()) {
+            mFeedbackMessageTextView.setText(XBlockUtils.getTextFromHTML(feedbackMessage));
+        }
+
+        XBlockUtils.hideSoftInput(getActivity(), getView());
+        Animation slideUpAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
+        slideUpAnimation.setDuration(1000L);
+        slideUpAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                mFeedbackView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // TODO shall we hide the question card view and input view
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        mFeedbackView.startAnimation(slideUpAnimation);
+    }
+
     @Override
     public XBlockUserAnswer<String> getUserAnswer() {
         XBlockUserAnswer<String> freeTextUserAnser = new XBlockUserAnswer<>();
@@ -169,5 +214,16 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerX
             freeTextUserAnser.setUserAnswer(mUserAnswerEditText.getText().toString());
         }
         return freeTextUserAnser;
+    }
+
+    @Override
+    public void setSubmitResponse(XBlockSubmitResponse<Void> xBlockSubmitResponse) {
+        // TODO add code to set feedback and update layout
+        if (xBlockSubmitResponse == null) {
+            Toast.makeText(getActivity(), "Submit Response is not initialized.", Toast.LENGTH_SHORT).show();
+        } else {
+            showFeedbackMessage(true, xBlockSubmitResponse.getFeedbackTitle(), xBlockSubmitResponse.getFeedbackMessage());
+        }
+
     }
 }

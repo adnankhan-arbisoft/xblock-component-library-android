@@ -13,6 +13,7 @@ import com.mckinsey.academy.xblocks.R;
 import com.mckinsey.academy.xblocks.callbacks.VideoXBlockCallback;
 import com.mckinsey.academy.xblocks.exception.PlayingException;
 import com.mckinsey.academy.xblocks.info.VideoXBlockInfo;
+import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 import com.mckinsey.academy.xblocks.player.ObservableOoyalaPlayer;
@@ -36,7 +37,7 @@ import static com.mckinsey.academy.xblocks.common.Constants.X_BLOCK_TAG;
 /**
  * Ooyala Video XBlock Component. It Includes Ooyala player and component description UI.
  */
-public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallback, Void>
+public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallback, Void, Void>
         implements Observer {
 
     private static final String TAG = VideoXBlockFragment.class.getSimpleName();
@@ -276,5 +277,10 @@ public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallb
     @Override
     public XBlockUserAnswer<Void> getUserAnswer() {
         return null;
+    }
+
+    @Override
+    public void setSubmitResponse(XBlockSubmitResponse<Void> xBlockSubmitResponse) {
+        // TODO add code to update UI from SUBMIT Response
     }
 }

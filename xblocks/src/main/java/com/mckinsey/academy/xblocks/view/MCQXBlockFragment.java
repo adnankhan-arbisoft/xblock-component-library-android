@@ -13,6 +13,7 @@ import com.mckinsey.academy.xblocks.R;
 import com.mckinsey.academy.xblocks.callbacks.MCQResponseCallback;
 import com.mckinsey.academy.xblocks.callbacks.MCQXBlockCallback;
 import com.mckinsey.academy.xblocks.info.MCQXBlockInfo;
+import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 import com.mckinsey.academy.xblocks.model.MCQFeedback;
@@ -33,7 +34,7 @@ import static com.mckinsey.academy.xblocks.common.Constants.EXTRA_XBLOCK_INFO;
  * MCQ and MRQ XBlock Fragment. Activity/Fragment in which this functionality is required
  * needs to add that this fragment as there child fragment
  */
-public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback, List<MCQOption>>
+public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback, List<MCQOption>, Void>
         implements BaseRecyclerAdapter.OnItemClickListener<MCQOption>, MCQResponseCallback {
 
     private MCQXBlockInfo xBlockInfo;
@@ -201,4 +202,10 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback,
         optionsView.removeItemDecoration(mcqListItemDecorators.getSpace());
         optionsView.addItemDecoration(mcqListItemDecorators.getFeedbackDecorator());
     }
+
+    @Override
+    public void setSubmitResponse(XBlockSubmitResponse<Void> xBlockSubmitResponse) {
+        // TODO add code to handle submit api response and corresponding update UI
+    }
+
 }

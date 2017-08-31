@@ -1,5 +1,6 @@
 package com.mckinsey.academy.xblocks.callbacks;
 
+import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 
 /**
@@ -7,8 +8,10 @@ import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
  *
  * @param <T> Generic type of answer that should be returned by the XBlock
  */
-public interface XBlockComponentFragment<T> {
+public interface XBlockComponentFragment<T, U> {
 
     XBlockUserAnswer<T> getUserAnswer();
+
+    void setSubmitResponse(XBlockSubmitResponse<U> xBlockSubmitResponse);
 
 }
