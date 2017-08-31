@@ -15,7 +15,11 @@ import com.mckinsey.academy.xblocks.callbacks.LongAnswerXBlockCallback;
 import com.mckinsey.academy.xblocks.callbacks.XBlockComponentFragment;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockInfoBuilder;
+import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Sample fragment for Long Answer XBlock
@@ -23,9 +27,11 @@ import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 public class XBlockLongAnswerSampleFragment extends Fragment implements LongAnswerXBlockCallback {
     private static final String ARG_TITLE = "param_title";
     private static final String ARG_DESC = "param_description";
+    private static final String ARG_USER_ANSWER = "param_user_answer";
 
     private String mParamTitle;
     private String mParamDesc;
+    private String mParamUserAnswer;
     private Button btnSubmit = null;
 
     public XBlockLongAnswerSampleFragment() {
@@ -40,11 +46,12 @@ public class XBlockLongAnswerSampleFragment extends Fragment implements LongAnsw
      * @param description Parameter 2.
      * @return A new instance of fragment XBlockLongAnswerSampleFragment.
      */
-    public static XBlockLongAnswerSampleFragment newInstance(String title, String description) {
+    public static XBlockLongAnswerSampleFragment newInstance(String title, String description, String userAnswer) {
         XBlockLongAnswerSampleFragment fragment = new XBlockLongAnswerSampleFragment();
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
         args.putString(ARG_DESC, description);
+        args.putString(ARG_USER_ANSWER, userAnswer);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,6 +62,7 @@ public class XBlockLongAnswerSampleFragment extends Fragment implements LongAnsw
         if (getArguments() != null) {
             mParamTitle = getArguments().getString(ARG_TITLE);
             mParamDesc = getArguments().getString(ARG_DESC);
+            mParamUserAnswer = getArguments().getString(ARG_USER_ANSWER);
         }
     }
 
@@ -78,6 +86,21 @@ public class XBlockLongAnswerSampleFragment extends Fragment implements LongAnsw
                 if (frag != null && frag instanceof XBlockComponentFragment) {
                     XBlockUserAnswer<String> freeTextAnswer = ((XBlockComponentFragment) frag).getUserAnswer();
                     Toast.makeText(getActivity(), freeTextAnswer.getUserAnswer(), Toast.LENGTH_SHORT).show();
+
+
+                    // testing the response
+                    LongAnswerSubmitResponse.LongAnswerResult result = new LongAnswerSubmitResponse.LongAnswerResult("b22173b", "correct", 1.4F, "some random text", 2);
+                    List<LongAnswerSubmitResponse.LongAnswerResult> arrResults = new ArrayList<>();
+                    arrResults.add(result);
+                    LongAnswerSubmitResponse response = new LongAnswerSubmitResponse(1, true, "Some message", 4, arrResults);
+
+                    XBlockSubmitResponse<LongAnswerSubmitResponse> responseToInject = new XBlockSubmitResponse<LongAnswerSubmitResponse>();
+                    responseToInject.setSuccess(true);
+                    responseToInject.setFeedbackMessage("BlablablaBlablablaBlablablaBlablablaBlablabla");
+                    responseToInject.setFeedbackTitle("Thank You!");
+                    responseToInject.setSubmitResponse(response);
+
+                    ((XBlockComponentFragment) frag).setSubmitResponse(responseToInject);
                 }
             }
         });
@@ -91,6 +114,7 @@ public class XBlockLongAnswerSampleFragment extends Fragment implements LongAnsw
         XBlockInfo xBlockInfo = XBlockInfoBuilder.buildLongAnswerXBlockInfo()
                 .setTitle(mParamTitle)
                 .setDescription(mParamDesc)
+                .setUserAnswer(mParamUserAnswer)
                 .build();
 
         final XBlock xBlock = XBlock.with(getChildFragmentManager(), R.id.xblock_container, xBlockInfo, this/*call back*/);
