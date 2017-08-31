@@ -8,7 +8,7 @@ import com.mckinsey.academy.xblocks.exception.InstantiationException;
  */
 public class VideoXBlockInfoBuilder {
     private String title;
-    private String details;
+    private String htmlDescription;
     private String embedId;
     private String pcode;
     private String domain;
@@ -25,13 +25,13 @@ public class VideoXBlockInfoBuilder {
     }
 
     /**
-     * Set details of the video component here, which will appear below title(below video player).
+     * Set htmlDescription of the video component here, which will below video player.
      *
-     * @param details description of the video component.
+     * @param htmlDescription description of the video component.
      * @return
      */
-    public VideoXBlockInfoBuilder setDetails(String details) {
-        this.details = details;
+    public VideoXBlockInfoBuilder setHtmlDescription(String htmlDescription) {
+        this.htmlDescription = htmlDescription;
         return this;
     }
 
@@ -61,6 +61,6 @@ public class VideoXBlockInfoBuilder {
             throw new InstantiationException("domain has not been set");
         }
 
-        return new VideoXBlockInfo(title, details, embedId, pcode, domain);
+        return new VideoXBlockInfo(title, htmlDescription, embedId, pcode, domain);
     }
 }
