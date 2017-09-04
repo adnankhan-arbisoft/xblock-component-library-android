@@ -111,7 +111,7 @@
             android:layout_gravity="center_horizontal"
             android:padding="16dp"
             android:inputType="textMultiLine"
-            android:text="Placeholder text for positive feedback when a user has successfully completed the component, all cards have been actioned."
+            android:text="@null"
             android:gravity="center_horizontal"
             android:textColor="@android:color/black"
             android:textSize="16sp"
