@@ -37,7 +37,7 @@ import static com.mckinsey.academy.xblocks.common.Constants.X_BLOCK_TAG;
 /**
  * Ooyala Video XBlock Component. It Includes Ooyala player and component description UI.
  */
-public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallback, Void>
+public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallback, Void, Void>
         implements Observer {
 
     private static final String TAG = VideoXBlockFragment.class.getSimpleName();
@@ -277,7 +277,7 @@ public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallb
     }
 
     @Override
-    public void setSubmitResponse(XBlockSubmitResponse xBlockSubmitResponse) {
+    public void setSubmitResponse(XBlockSubmitResponse<Void> xBlockSubmitResponse) {
         // TODO add code to update UI from SUBMIT Response
     }
 }

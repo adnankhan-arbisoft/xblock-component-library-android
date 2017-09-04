@@ -109,7 +109,7 @@ public class XBlockMCQSampleFragment extends Fragment {
                     XBlockUserAnswer<List<Integer>> mcqAnswers = ((XBlockComponentFragment) frag)
                             .getUserAnswer();
                     HashMap<String, MCQFeedback> mcqResultHashMap = new HashMap<>();
-                    List<Integer> selectedOption = mcqAnswers.getUserAnswer();
+                    List<Integer> selectedOption = mcqAnswers.get();
                     for (Integer position : selectedOption) {
                         mcqResultHashMap.put(options.get(position).getValue(),
                                 new MCQFeedback(position % 2 == 0, String.format("Reason %s", position)));

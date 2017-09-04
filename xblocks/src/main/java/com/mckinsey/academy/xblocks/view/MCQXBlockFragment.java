@@ -13,15 +13,15 @@ import com.mckinsey.academy.xblocks.R;
 import com.mckinsey.academy.xblocks.callbacks.MCQResponseCallback;
 import com.mckinsey.academy.xblocks.callbacks.MCQXBlockCallback;
 import com.mckinsey.academy.xblocks.info.MCQXBlockInfo;
-import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
+import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 import com.mckinsey.academy.xblocks.model.MCQFeedback;
 import com.mckinsey.academy.xblocks.model.MCQOption;
 import com.mckinsey.academy.xblocks.utils.XBlockUtils;
 import com.mckinsey.academy.xblocks.view.adapters.BaseRecyclerAdapter;
-import com.mckinsey.academy.xblocks.view.adapters.MCQOptionsAdapter;
 import com.mckinsey.academy.xblocks.view.adapters.MCQFeedbackAdapter;
+import com.mckinsey.academy.xblocks.view.adapters.MCQOptionsAdapter;
 import com.mckinsey.academy.xblocks.view.adapters.decorators.MCQListItemDecorators;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import static com.mckinsey.academy.xblocks.common.Constants.EXTRA_XBLOCK_INFO;
  * MCQ and MRQ XBlock Fragment. Activity/Fragment in which this functionality is required
  * needs to add that this fragment as there child fragment
  */
-public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback, List<MCQOption>>
+public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback, List<MCQOption>, HashMap<String, MCQFeedback>>
         implements BaseRecyclerAdapter.OnItemClickListener<MCQOption>, MCQResponseCallback {
 
     private MCQXBlockInfo xBlockInfo;
@@ -172,7 +172,7 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback,
     @Override
     public XBlockUserAnswer<List<MCQOption>> getUserAnswer() {
         XBlockUserAnswer<List<MCQOption>> xBlockUserAnswer = new XBlockUserAnswer<>();
-        xBlockUserAnswer.setUserAnswer(getSelectedOptions());
+        xBlockUserAnswer.set(getSelectedOptions());
         return xBlockUserAnswer;
     }
 
@@ -204,8 +204,7 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback,
     }
 
     @Override
-    public void setSubmitResponse(XBlockSubmitResponse xBlockSubmitResponse) {
-        // TODO add code to handle submit api response and corresponding update UI
+    public void setSubmitResponse(XBlockSubmitResponse<HashMap<String, MCQFeedback>> xBlockSubmitResponse) {
+        onFeedbackReceived(xBlockSubmitResponse.getFeedbackMessage(), xBlockSubmitResponse.getSubmitResponse());
     }
-
 }
