@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.mckinsey.academy.xblocks.XBlock;
 import com.mckinsey.academy.xblocks.callbacks.LongAnswerXBlockCallback;
 import com.mckinsey.academy.xblocks.callbacks.XBlockComponentFragment;
+import com.mckinsey.academy.xblocks.common.Constants;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockInfoBuilder;
 import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
@@ -85,7 +86,7 @@ public class XBlockLongAnswerSampleFragment extends Fragment implements LongAnsw
                 Fragment frag = getChildFragmentManager().findFragmentById(R.id.xblock_container);
                 if (frag != null && frag instanceof XBlockComponentFragment) {
                     XBlockUserAnswer<String> freeTextAnswer = ((XBlockComponentFragment) frag).getUserAnswer();
-                    Toast.makeText(getActivity(), freeTextAnswer.getUserAnswer(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), freeTextAnswer.get(), Toast.LENGTH_SHORT).show();
 
 
                     // testing the response
@@ -95,7 +96,7 @@ public class XBlockLongAnswerSampleFragment extends Fragment implements LongAnsw
                     LongAnswerSubmitResponse response = new LongAnswerSubmitResponse(1, true, "Some message", 4, arrResults);
 
                     XBlockSubmitResponse<LongAnswerSubmitResponse> responseToInject = new XBlockSubmitResponse<LongAnswerSubmitResponse>();
-                    responseToInject.setSuccess(true);
+                    responseToInject.setStatus(Constants.STATUS_CORRECT);
                     responseToInject.setFeedbackMessage("BlablablaBlablablaBlablablaBlablablaBlablabla");
                     responseToInject.setFeedbackTitle("Thank You!");
                     responseToInject.setSubmitResponse(response);

@@ -1,5 +1,7 @@
 package com.mckinsey.academy.xblocks.info;
 
+import com.mckinsey.academy.xblocks.common.Constants;
+
 /**
  * Wrapper class to hold submit api response data.
  */
@@ -7,8 +9,8 @@ package com.mckinsey.academy.xblocks.info;
 public class XBlockSubmitResponse<T> {
 
     private T mSubmitResponse;
-
-    private boolean isSuccess;
+    @Constants.ResponseStatus
+    private String status;
     private String mFeedbackTitle;
     private String mFeedbackMessage;
 
@@ -21,11 +23,20 @@ public class XBlockSubmitResponse<T> {
     }
 
     public boolean isSuccess() {
-        return isSuccess;
+        return Constants.STATUS_CORRECT.equalsIgnoreCase(status);
     }
 
-    public void setSuccess(boolean success) {
-        isSuccess = success;
+    public boolean isPartial() {
+        return Constants.STATUS_PARTIAL.equalsIgnoreCase(status);
+    }
+
+    @Constants.ResponseStatus
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     /**

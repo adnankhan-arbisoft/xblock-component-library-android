@@ -1,7 +1,6 @@
 package com.mckinsey.academy.xblocks.view;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,8 +20,6 @@ import android.widget.Toast;
 
 import com.mckinsey.academy.xblocks.R;
 import com.mckinsey.academy.xblocks.callbacks.LongAnswerXBlockCallback;
-import com.mckinsey.academy.xblocks.common.Constants;
-import com.mckinsey.academy.xblocks.exception.CallbackCastException;
 import com.mckinsey.academy.xblocks.info.LongAnswerXBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
@@ -35,7 +32,7 @@ import static com.mckinsey.academy.xblocks.view.LongAnswerUserInputExpandedFragm
  * UI Component Fragment for XBlock Long-Answer Problem Builder
  */
 
-public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerXBlockCallback, String> {
+public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerXBlockCallback, String, Void> {
 
     private static final String TAG = LongAnswerXBlockFragment.class.getSimpleName();
     private static final String EXTRA_XBLOCK_INFO = "xblock_info";
@@ -211,13 +208,13 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerX
     public XBlockUserAnswer<String> getUserAnswer() {
         XBlockUserAnswer<String> freeTextUserAnser = new XBlockUserAnswer<>();
         if (mUserAnswerEditText != null) {
-            freeTextUserAnser.setUserAnswer(mUserAnswerEditText.getText().toString());
+            freeTextUserAnser.set(mUserAnswerEditText.getText().toString());
         }
         return freeTextUserAnser;
     }
 
     @Override
-    public void setSubmitResponse(XBlockSubmitResponse xBlockSubmitResponse) {
+    public void setSubmitResponse(XBlockSubmitResponse<Void> xBlockSubmitResponse) {
         // TODO add code to set feedback and update layout
         if (xBlockSubmitResponse == null) {
             Toast.makeText(getActivity(), "Submit Response is not initialized.", Toast.LENGTH_SHORT).show();
