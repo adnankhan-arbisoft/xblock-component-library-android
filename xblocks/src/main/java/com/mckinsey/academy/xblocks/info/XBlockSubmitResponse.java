@@ -10,7 +10,7 @@ public class XBlockSubmitResponse<T> {
 
     private T mSubmitResponse;
     @Constants.ResponseStatus
-    private String status;
+    private String mStatus;
     private String mFeedbackTitle;
     private String mFeedbackMessage;
 
@@ -22,26 +22,45 @@ public class XBlockSubmitResponse<T> {
         return mSubmitResponse;
     }
 
-    public boolean isSuccess() {
-        return Constants.STATUS_CORRECT.equalsIgnoreCase(status);
+    /**
+     * {@code true} if the {@link #mStatus} received from API is {@link Constants#STATUS_CORRECT},
+     * false otherwise
+     *
+     * @return true if user answer was correct, false otherwise
+     */
+    public boolean isCorrect() {
+        return Constants.STATUS_CORRECT.equalsIgnoreCase(mStatus);
     }
 
+    /**
+     * {@code true} if the {@link #mStatus} received from API is {@link Constants#STATUS_PARTIAL},
+     * false otherwise
+     *
+     * @return true if user answer was partially correct, false otherwise
+     */
     public boolean isPartial() {
-        return Constants.STATUS_PARTIAL.equalsIgnoreCase(status);
+        return Constants.STATUS_PARTIAL.equalsIgnoreCase(mStatus);
     }
 
+    /**
+     * Returns the status received from API. Ideally should be one from
+     * {@link com.mckinsey.academy.xblocks.common.Constants.ResponseStatus}
+     *
+     * @return The status received from API
+     */
     @Constants.ResponseStatus
     public String getStatus() {
-        return status;
+        return mStatus;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        mStatus = status;
     }
 
     /**
      * Returns header label or Title
-     * This can be empty in cases. Like for example, if default is "Thanks you!"
+     * This can be empty in cases. Like for example, if default is "Thank you!"
+     *
      * @return
      */
     public String getFeedbackTitle() {
@@ -55,6 +74,7 @@ public class XBlockSubmitResponse<T> {
     /**
      * Returns the feedback message.
      * Could be empty.
+     *
      * @return
      */
     public String getFeedbackMessage() {
