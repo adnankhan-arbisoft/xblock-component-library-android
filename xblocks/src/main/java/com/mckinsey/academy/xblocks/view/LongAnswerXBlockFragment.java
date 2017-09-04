@@ -19,11 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mckinsey.academy.xblocks.R;
+import com.mckinsey.academy.xblocks.callbacks.LongAnswerResponseCallback;
 import com.mckinsey.academy.xblocks.callbacks.LongAnswerXBlockCallback;
 import com.mckinsey.academy.xblocks.info.LongAnswerXBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
+import com.mckinsey.academy.xblocks.model.LongAnswerFeedback;
 import com.mckinsey.academy.xblocks.utils.XBlockUtils;
 
 import static com.mckinsey.academy.xblocks.view.LongAnswerUserInputExpandedFragment.ARGS_KEY_USER_INPUT;
@@ -32,7 +34,8 @@ import static com.mckinsey.academy.xblocks.view.LongAnswerUserInputExpandedFragm
  * UI Component Fragment for XBlock Long-Answer Problem Builder
  */
 
-public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerXBlockCallback, String, Void> {
+public class LongAnswerXBlockFragment extends
+        LifecycleOwnerFragment<LongAnswerXBlockCallback, String, LongAnswerFeedback> implements LongAnswerResponseCallback {
 
     private static final String TAG = LongAnswerXBlockFragment.class.getSimpleName();
     private static final String EXTRA_XBLOCK_INFO = "xblock_info";
@@ -214,13 +217,22 @@ public class LongAnswerXBlockFragment extends LifecycleOwnerFragment<LongAnswerX
     }
 
     @Override
-    public void setSubmitResponse(XBlockSubmitResponse<Void> xBlockSubmitResponse) {
-        // TODO add code to set feedback and update layout
-        if (xBlockSubmitResponse == null) {
-            Toast.makeText(getActivity(), "Submit Response is not initialized.", Toast.LENGTH_SHORT).show();
-        } else {
-            showFeedbackMessage(true, xBlockSubmitResponse.getFeedbackTitle(), xBlockSubmitResponse.getFeedbackMessage());
-        }
+    public void setSubmitResponse(XBlockSubmitResponse<LongAnswerFeedback> xBlockSubmitResponse) {
+        onFeedbackReceived(xBlockSubmitResponse.getFeedbackTitle(), xBlockSubmitResponse.getFeedbackMessage(), xBlockSubmitResponse.getSubmitResponse());
+    }
+
+    @Override
+    public String getUserInput() {
+        return null;
+    }
+
+    @Override
+    public void onFeedbackReceived(String title, String message, LongAnswerFeedback feedback) {
+        showFeedbackMessage(feedback.getStatus().equalsIgnoreCase("correct"), title, message);
+    }
+
+    @Override
+    public void onRetakeQuiz() {
 
     }
 }
