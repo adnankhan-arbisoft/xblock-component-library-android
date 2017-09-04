@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.webkit.WebView;
 
 import com.mckinsey.academy.xblocks.R;
 import com.mckinsey.academy.xblocks.callbacks.VideoXBlockCallback;
@@ -45,8 +45,7 @@ public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallb
     protected ObservableOoyalaPlayer player;
     protected OoyalaPlayerLayoutController playerLayoutController;
 
-    private TextView videoTitle;
-    private TextView videoDescription;
+    private WebView videoDescription;
     private OoyalaPlayerLayout playerLayout;
 
     public static VideoXBlockFragment newInstance(XBlockInfo xBlockInfo) {
@@ -72,8 +71,7 @@ public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallb
         Bundle args = getArguments();
         VideoXBlockInfo xBlockInfo = (VideoXBlockInfo) args.getSerializable(EXTRA_XBLOCK_INFO);
 
-        videoTitle.setText(xBlockInfo.getTitle());
-        videoDescription.setText(xBlockInfo.getDetails());
+        videoDescription.loadData(xBlockInfo.getHtmlDescription(), "text/html", "UTF-8");
 
         Options options = new Options.Builder().setUseExoPlayer(true).build();
         player = new ObservableOoyalaPlayer(xBlockInfo.getPcode(), new PlayerDomain(xBlockInfo
@@ -93,8 +91,7 @@ public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallb
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_xblock_video, container, false);
 
-        videoTitle = (TextView) view.findViewById(R.id.video_title);
-        videoDescription = (TextView) view.findViewById(R.id.video_description);
+        videoDescription = view.findViewById(R.id.video_description);
         playerLayout = (OoyalaPlayerLayout) view.findViewById(R.id.player_layout);
 
         return view;
