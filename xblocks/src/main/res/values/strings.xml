@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">XBlocks</string>
+    <string name="fragment_long_answer_label_feedback_default">Thank You!</string>
 </resources>

@@ -131,8 +131,8 @@ public class LongAnswerUserInputExpandedFragment extends BottomSheetDialogFragme
                 }
             });
         }
-
-        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        
+        params.height = screenHeight;
         params.setMargins(0, 0, 0, (int) getActivity().getResources().getDimension(R.dimen.long_answer_user_input_expanded_fragment_layout_margin));
         parent.setLayoutParams(params);
 
