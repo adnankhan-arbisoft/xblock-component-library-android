@@ -106,12 +106,13 @@ public class XBlockMCQSampleFragment extends Fragment {
                 setCallBackReference();
                 Fragment frag = getChildFragmentManager().findFragmentById(R.id.xblock_container);
                 if (frag != null && frag instanceof MCQXBlockFragment) {
-                    XBlockUserAnswer<List<Integer>> mcqAnswers = ((XBlockComponentFragment) frag)
+                    XBlockUserAnswer<List<MCQOption>> mcqAnswers = ((XBlockComponentFragment) frag)
                             .getUserAnswer();
                     HashMap<String, MCQFeedback> mcqResultHashMap = new HashMap<>();
-                    List<Integer> selectedOption = mcqAnswers.get();
-                    for (Integer position : selectedOption) {
-                        mcqResultHashMap.put(options.get(position).getValue(),
+                    List<MCQOption> selectedOption = mcqAnswers.get();
+                    for (int position = 0 ; position < selectedOption.size() ; position++) {
+                        MCQOption mcqOption = selectedOption.get(position);
+                        mcqResultHashMap.put(mcqOption.getValue(),
                                 new MCQFeedback(position % 2 == 0, String.format("Reason %s", position)));
                     }
                     mcqResponseCallback.onFeedbackReceived("An “!” shows that you were not right, either incorrectly selecting the item or incorrectly excluding it.",
