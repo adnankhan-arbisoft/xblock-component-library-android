@@ -14,4 +14,6 @@ public interface XBlockComponentFragment<A, R> {
 
     void setSubmitResponse(XBlockSubmitResponse<R> xBlockSubmitResponse);
 
+    void setLatestUserAnswer(XBlockUserAnswer<A> userAnswer);
+
 }

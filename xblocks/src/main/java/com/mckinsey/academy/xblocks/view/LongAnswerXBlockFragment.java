@@ -211,6 +211,11 @@ public class LongAnswerXBlockFragment extends
     }
 
     @Override
+    public void setLatestUserAnswer(XBlockUserAnswer<String> userAnswer) {
+        setPreAddedUserAnswer(userAnswer.get());
+    }
+
+    @Override
     public String getUserInput() {
         return null;
     }

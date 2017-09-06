@@ -207,4 +207,9 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback,
     public void setSubmitResponse(XBlockSubmitResponse<HashMap<String, MCQFeedback>> xBlockSubmitResponse) {
         onFeedbackReceived(xBlockSubmitResponse.getFeedbackMessage(), xBlockSubmitResponse.getSubmitResponse());
     }
+
+    @Override
+    public void setLatestUserAnswer(XBlockUserAnswer<List<MCQOption>> userAnswer) {
+        // TODO add code for MCQ/MRQ as needed.
+    }
 }
