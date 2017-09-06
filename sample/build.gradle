@@ -1,3 +1,5 @@
+import java.security.MessageDigest
+
 apply plugin: 'com.android.application'
 
 android {
@@ -27,4 +29,32 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(":xblocks")
+}
+
+task zipAssets(type: Zip) {
+    from('src/main') {
+        include 'assets/**'
+    }
+    destinationDir = file('src/main/assets')
+    exclude 'assets/assets.zip'
+    archiveName 'assets.zip'
+}
+
+task setZipHash << {
+    ext.zipHash = "\"" + getZipHash() + "\""
+    android.buildTypes.debug {
+        buildConfigField "String", "ASSETS_ZIP_HASH", zipHash
+    }
+}
+
+preBuild.dependsOn setZipHash
+setZipHash.dependsOn zipAssets
+
+def getZipHash() {
+    MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
+    String fileContents = file('src/main/assets/assets.zip').text
+    sha1.update(fileContents.bytes)
+    Formatter hexHash = new Formatter()
+    sha1.digest().each { b -> hexHash.format('%02x', b) }
+    return hexHash
 }
