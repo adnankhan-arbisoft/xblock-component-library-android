@@ -280,4 +280,9 @@ public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallb
     public void setSubmitResponse(XBlockSubmitResponse<Void> xBlockSubmitResponse) {
         // TODO add code to update UI from SUBMIT Response
     }
+
+    @Override
+    public void setLatestUserAnswer(XBlockUserAnswer<Void> userAnswer) {
+        // TODO add code to set last user answer if required
+    }
 }
