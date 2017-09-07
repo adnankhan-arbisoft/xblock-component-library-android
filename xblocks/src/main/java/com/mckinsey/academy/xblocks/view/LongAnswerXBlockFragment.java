@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +17,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mckinsey.academy.xblocks.R;
 import com.mckinsey.academy.xblocks.callbacks.LongAnswerResponseCallback;
 import com.mckinsey.academy.xblocks.callbacks.LongAnswerXBlockCallback;
 import com.mckinsey.academy.xblocks.info.LongAnswerXBlockInfo;
-import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockInfo;
+import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 import com.mckinsey.academy.xblocks.model.LongAnswerFeedback;
 import com.mckinsey.academy.xblocks.utils.XBlockUtils;
@@ -43,13 +43,10 @@ public class LongAnswerXBlockFragment extends
     public static final int REQ_CODE_LONG_ANSWER_USER_INPUT = 100;
 
     private EditText mUserAnswerEditText = null;
-    private TextView mTitleTextView = null;
-    private TextView mDescTextView = null;
+    private TextView mQuestionContentTextView = null;
     private ImageView mExpandInputFieldImageView = null;
     private View mQuestionCardView = null;
     private View mUserInputContainerView = null;
-    private View mFeedbackView = null;
-    private TextView mFeedbackTitleTextView = null;
     private TextView mFeedbackMessageTextView = null;
 
     private BottomSheetBehavior mBottomSheetBehavior;
@@ -88,23 +85,19 @@ public class LongAnswerXBlockFragment extends
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mTitleTextView = (TextView)view.findViewById(R.id.view_title);
-        mDescTextView = (TextView)view.findViewById(R.id.view_description);
+        mQuestionContentTextView = (TextView)view.findViewById(R.id.view_question_content);
         mUserAnswerEditText = (EditText) view.findViewById(R.id.view_user_answer);
         mExpandInputFieldImageView = (ImageView) view.findViewById(R.id.btn_expand);
         // container views
         mUserInputContainerView = view.findViewById(R.id.user_answer_field_container);
         mQuestionCardView = view.findViewById(R.id.question_card_view);
-        mFeedbackView = view.findViewById(R.id.feedback_view);
-        mFeedbackTitleTextView = (TextView) view.findViewById(R.id.feedback_title);
         mFeedbackMessageTextView = (TextView) view.findViewById(R.id.feedback_message);
 
         Bundle args = getArguments();
         if (args != null) {
             mXBlockInfo = (LongAnswerXBlockInfo) args.getSerializable(EXTRA_XBLOCK_INFO);
             if (mXBlockInfo != null) {
-                mTitleTextView.setText(mXBlockInfo.getTitle());
-                mDescTextView.setText(XBlockUtils.getTextFromHTML(mXBlockInfo.getDetails()));
+                mQuestionContentTextView.setText(XBlockUtils.getTextFromHTML(mXBlockInfo.getDetails()));
                 setPreAddedUserAnswer(mXBlockInfo.getUserAnswer());
             }
         }
@@ -177,11 +170,8 @@ public class LongAnswerXBlockFragment extends
         }
     }
 
-    private void showFeedbackMessage(boolean success, String feedbackTitle, String feedbackMessage) {
-        if (!feedbackTitle.isEmpty()) {
-            mFeedbackTitleTextView.setText(feedbackTitle);
-        }
-        if (!feedbackMessage.isEmpty()) {
+    private void showFeedbackMessage(boolean success, String feedbackMessage) {
+        if (!TextUtils.isEmpty(feedbackMessage)) {
             mFeedbackMessageTextView.setText(XBlockUtils.getTextFromHTML(feedbackMessage));
         }
 
@@ -191,12 +181,11 @@ public class LongAnswerXBlockFragment extends
         slideUpAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                mFeedbackView.setVisibility(View.VISIBLE);
+                mFeedbackMessageTextView.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                // TODO shall we hide the question card view and input view
             }
 
             @Override
@@ -204,7 +193,7 @@ public class LongAnswerXBlockFragment extends
 
             }
         });
-        mFeedbackView.startAnimation(slideUpAnimation);
+        mFeedbackMessageTextView.startAnimation(slideUpAnimation);
     }
 
     @Override
@@ -228,7 +217,7 @@ public class LongAnswerXBlockFragment extends
 
     @Override
     public void onFeedbackReceived(String title, String message, LongAnswerFeedback feedback) {
-        showFeedbackMessage(feedback.getStatus().equalsIgnoreCase("correct"), title, message);
+        showFeedbackMessage(feedback.getStatus().equalsIgnoreCase("correct"), message);
     }
 
     @Override
