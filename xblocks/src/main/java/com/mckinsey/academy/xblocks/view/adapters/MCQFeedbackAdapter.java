@@ -2,6 +2,7 @@ package com.mckinsey.academy.xblocks.view.adapters;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -51,7 +52,7 @@ public class MCQFeedbackAdapter extends BaseRecyclerAdapter<MCQOption, MCQFeedba
         MCQOption option = arrData.get(position);
         MCQFeedback feedback = mFeedbackMap.get(option.getValue());
         holder.optionCheckbox.setChecked(option.isSelected());
-        holder.optionText.setText(option.getContent());
+        holder.optionText.setText(XBlockUtils.getTextFromHTML(option.getContent()));
 
         holder.feedbackView.setBackgroundColor(ContextCompat.getColor(mContext,
                 feedback.isCorrect() ? R.color.mcqFeedbackCorrectAnswerBackground :
@@ -62,7 +63,12 @@ public class MCQFeedbackAdapter extends BaseRecyclerAdapter<MCQOption, MCQFeedba
         holder.feedbackText.setTextColor(ContextCompat.getColor(mContext,
                 feedback.isCorrect() ? R.color.mcqFeedbackCorrectAnswerTextColor
                         : R.color.mcqFeedbackIncorrectAnswerTextColor));
-        holder.feedbackText.setText(XBlockUtils.getTextFromHTML(feedback.getMessage()));
+        if(!TextUtils.isEmpty(feedback.getMessage())) {
+            holder.feedbackText.setText(XBlockUtils.getTextFromHTML(feedback.getMessage()));
+            holder.feedbackView.setVisibility(View.VISIBLE);
+        } else {
+            holder.feedbackView.setVisibility(View.GONE);
+        }
     }
 
     static class ViewHolder extends MCQOptionsAdapter.ViewHolder {
