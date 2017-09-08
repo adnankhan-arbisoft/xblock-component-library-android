@@ -226,12 +226,14 @@ public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallb
                 break;
 
             case OoyalaPlayer.ERROR_NOTIFICATION_NAME:
-                Log.d(X_BLOCK_TAG, "Playback Error. Code:" + player.getError().getCode() + ", " +
-                        "Description: " + player.getError().getMessage());
                 OoyalaException error = player.getError();
-                PlayingException exception = new PlayingException(error.getMessage(), error
-                        .getCause());
-                mCallback.onError(exception);
+                if (error != null) {
+                    Log.e(X_BLOCK_TAG, "Playback Error. Code:" + error.getCode() +
+                            ", " + "Description: " + error.getMessage());
+                    PlayingException exception = new PlayingException(error.getMessage(),
+                            error.getCause());
+                    mCallback.onError(exception);
+                }
                 break;
 
             case OoyalaPlayer.CC_STYLING_CHANGED_NOTIFICATION_NAME:
