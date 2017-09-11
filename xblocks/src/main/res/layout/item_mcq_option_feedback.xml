@@ -24,7 +24,7 @@
         tools:ignore="RtlHardcoded">
 
         <ImageView
-            android:id="@+id/feedback_icon"
+            android:id="@+id/tip_icon"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/mcq_item_list_feedback_icon_height"
             app:layout_constraintBaseline_toBaselineOf="@+id/feedback_text"
@@ -43,7 +43,7 @@
             android:lineSpacingMultiplier="1.1"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/feedback_icon"
+            app:layout_constraintLeft_toRightOf="@id/tip_icon"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="This answer should not have been selected. An immediate response to an E. Coli outbreak is not a situation that calls for divergent thinking."
