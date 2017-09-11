@@ -32,6 +32,8 @@
         <activity android:name=".XBlockMCQSampleActivity" />
         <!-- Annoucements Activity -->
         <activity android:name=".AnnouncementsActivity" />
+        <!-- RawHtml Sample Activity -->
+        <activity android:name=".XBlockRawHtmlSampleActivity" />
     </application>
 
 </manifest>

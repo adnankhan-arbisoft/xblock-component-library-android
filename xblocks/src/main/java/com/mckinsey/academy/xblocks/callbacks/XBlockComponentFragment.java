@@ -3,6 +3,8 @@ package com.mckinsey.academy.xblocks.callbacks;
 import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 
+import java.util.Map;
+
 /**
  * Interface to be implemented by the XBlock components to return user answer
  *
@@ -15,5 +17,7 @@ public interface XBlockComponentFragment<A, R> {
     void setSubmitResponse(XBlockSubmitResponse<R> xBlockSubmitResponse);
 
     void setLatestUserAnswer(XBlockUserAnswer<A> userAnswer);
+
+    void setCustomHeaders(Map<String, String> customHeaders);
 
 }

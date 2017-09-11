@@ -28,6 +28,7 @@ import com.ooyala.android.item.Video;
 import com.ooyala.android.notifications.BitrateChangedNotificationInfo;
 import com.ooyala.android.ui.OoyalaPlayerLayoutController;
 
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -286,5 +287,10 @@ public class VideoXBlockFragment extends LifecycleOwnerFragment<VideoXBlockCallb
     @Override
     public void setLatestUserAnswer(XBlockUserAnswer<Void> userAnswer) {
         // TODO add code to set last user answer if required
+    }
+
+    @Override
+    public void setCustomHeaders(Map<String, String> customHeaders) {
+        // nothing required
     }
 }

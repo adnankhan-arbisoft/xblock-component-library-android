@@ -28,6 +28,8 @@ import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 import com.mckinsey.academy.xblocks.model.LongAnswerFeedback;
 import com.mckinsey.academy.xblocks.utils.XBlockUtils;
 
+import java.util.Map;
+
 import static com.mckinsey.academy.xblocks.view.LongAnswerUserInputExpandedFragment.ARGS_KEY_USER_INPUT;
 
 /**
@@ -213,6 +215,11 @@ public class LongAnswerXBlockFragment extends
     @Override
     public void setLatestUserAnswer(XBlockUserAnswer<String> userAnswer) {
         setPreAddedUserAnswer(userAnswer.get());
+    }
+
+    @Override
+    public void setCustomHeaders(Map<String, String> customHeaders) {
+        // nothing required
     }
 
     @Override
