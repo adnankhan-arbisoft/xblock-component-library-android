@@ -48,6 +48,7 @@ public class LongAnswerXBlockFragment extends
     private View mQuestionCardView = null;
     private View mUserInputContainerView = null;
     private TextView mFeedbackMessageTextView = null;
+    private View mFeedbackMessageContainerView =  null;
 
     private BottomSheetBehavior mBottomSheetBehavior;
     private LongAnswerXBlockInfo mXBlockInfo;
@@ -92,6 +93,7 @@ public class LongAnswerXBlockFragment extends
         mUserInputContainerView = view.findViewById(R.id.user_answer_field_container);
         mQuestionCardView = view.findViewById(R.id.question_card_view);
         mFeedbackMessageTextView = (TextView) view.findViewById(R.id.feedback_message);
+        mFeedbackMessageContainerView = view.findViewById(R.id.feedback_message_container);
 
         Bundle args = getArguments();
         if (args != null) {
@@ -181,7 +183,7 @@ public class LongAnswerXBlockFragment extends
         slideUpAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                mFeedbackMessageTextView.setVisibility(View.VISIBLE);
+                mFeedbackMessageContainerView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -193,7 +195,7 @@ public class LongAnswerXBlockFragment extends
 
             }
         });
-        mFeedbackMessageTextView.startAnimation(slideUpAnimation);
+        mFeedbackMessageContainerView.startAnimation(slideUpAnimation);
     }
 
     @Override
