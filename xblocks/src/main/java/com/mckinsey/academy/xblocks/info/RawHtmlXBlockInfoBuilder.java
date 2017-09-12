@@ -3,7 +3,6 @@ package com.mckinsey.academy.xblocks.info;
 /**
  * Util class to build information to be passed to RawHtml Component
  */
-
 public class RawHtmlXBlockInfoBuilder {
 
     private String mTitle;

@@ -36,7 +36,7 @@ public class RawHtmlXBlockInfo extends XBlockInfo<RawHtmlXBlockCallback> {
      * @param mAuthToken - Authorization token: required to access the secure url
      * @param graded - flag to show if XBlock is graded or not
      */
-    public RawHtmlXBlockInfo(String title, String details, String studentViewUrl, String html, String baseUrl, String mAuthToken, boolean graded) {
+    RawHtmlXBlockInfo(String title, String details, String studentViewUrl, String html, String baseUrl, String mAuthToken, boolean graded) {
         super(title, details);
         this.mBaseUrl = baseUrl;
         this.mStudentViewUrl = studentViewUrl;

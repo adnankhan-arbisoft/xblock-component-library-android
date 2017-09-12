@@ -5,7 +5,6 @@ import com.mckinsey.academy.xblocks.view.RawHtmlXBlockFragment;
 /**
  * Callback interface to notify consumer of XBlock component
  */
-
 public interface RawHtmlXBlockCallback extends Callback {
 
     void onWebViewSetup();

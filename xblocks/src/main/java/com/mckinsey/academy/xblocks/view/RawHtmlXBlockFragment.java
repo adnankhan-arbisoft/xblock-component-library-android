@@ -30,14 +30,14 @@ import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 
 import java.util.Map;
 
+import static com.mckinsey.academy.xblocks.common.Constants.EXTRA_XBLOCK_INFO;
+
 /**
  * XBlock Component to show Raw HTML.
  */
-
 public class RawHtmlXBlockFragment extends LifecycleOwnerFragment<RawHtmlXBlockCallback, Void, Void> {
 
     private static final String TAG = RawHtmlXBlockFragment.class.getSimpleName();
-    private static final String EXTRA_XBLOCK_INFO = "xblock_info";
 
     private WebView mWebView = null;
     private ProgressBar mProgressBar = null;
@@ -45,10 +45,6 @@ public class RawHtmlXBlockFragment extends LifecycleOwnerFragment<RawHtmlXBlockC
     private RawHtmlXBlockInfo rawHtmlXBlockInfo = null;
 
     private Map<String, String> mapHeaders = null;
-
-    public RawHtmlXBlockFragment() {
-        // default constructor
-    }
 
     public static RawHtmlXBlockFragment newInstance(XBlockInfo xBlockInfo) {
         Bundle args = new Bundle();
@@ -85,35 +81,55 @@ public class RawHtmlXBlockFragment extends LifecycleOwnerFragment<RawHtmlXBlockC
         webView.setWebViewClient(new RawHTMLWebViewClient());
         webView.setWebChromeClient(new RawHTMLWebChromeClient());
 
-        if (mCallback != null) {
-            mCallback.onWebViewSetup();
-        }
+        mCallback.onWebViewSetup();
     }
 
     /**
      * Loads the URL or Raw HTML into webview
      */
     private void tryToLoadWebView() {
-        if (getArguments() != null) {
-            Bundle args = getArguments();
+
+        Bundle args = getArguments();
+
+        if (args != null) {
+
             rawHtmlXBlockInfo = (RawHtmlXBlockInfo) args.getSerializable(EXTRA_XBLOCK_INFO);
+
             if (rawHtmlXBlockInfo != null) {
-                if (!TextUtils.isEmpty(rawHtmlXBlockInfo.getStudentViewUrl())) {
-                    if (mapHeaders != null && mapHeaders.size() > 0) {
-                        mWebView.loadUrl(rawHtmlXBlockInfo.getStudentViewUrl(), mapHeaders);
+
+                if (!TextUtils.isEmpty(rawHtmlXBlockInfo.getHtml())) {
+
+                    // when we get raw html from server - load it on priority
+                    if (!TextUtils.isEmpty(rawHtmlXBlockInfo.getBaseUrl())) {
+
+                        mWebView.loadDataWithBaseURL(rawHtmlXBlockInfo.getBaseUrl(),
+                                rawHtmlXBlockInfo.getHtml(), "text/html", "UTF-8", null);
+
                     } else {
+
+                        mWebView.loadData(rawHtmlXBlockInfo.getHtml(), "text/html", "UTF-8");
+
+                    }
+
+                } else if (!TextUtils.isEmpty(rawHtmlXBlockInfo.getStudentViewUrl())) {
+
+                    // if HTML is not returned, fall back on student_view_url
+                    if (mapHeaders != null && mapHeaders.size() > 0) {
+
+                        mWebView.loadUrl(rawHtmlXBlockInfo.getStudentViewUrl(), mapHeaders);
+
+                    } else {
+
                         // this will eventually fail for secure url if cookies are not set
                         mWebView.loadUrl(rawHtmlXBlockInfo.getStudentViewUrl());
+
                     }
-                } else if (!TextUtils.isEmpty(rawHtmlXBlockInfo.getHtml())) {
-                    // when we get raw html from server
-                    if (!TextUtils.isEmpty(rawHtmlXBlockInfo.getBaseUrl())) {
-                        mWebView.loadDataWithBaseURL(rawHtmlXBlockInfo.getBaseUrl(), rawHtmlXBlockInfo.getHtml(), "text/html", "UTF-8", null);
-                    } else {
-                        mWebView.loadData(rawHtmlXBlockInfo.getHtml(), "text/html", "UTF-8");
-                    }
+
                 } else {
-                    Toast.makeText(getActivity(), "Unable to complete your request", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getActivity(), "Unable to complete your request",
+                            Toast.LENGTH_SHORT).show();
+
                 }
             }
         }
@@ -167,21 +183,9 @@ public class RawHtmlXBlockFragment extends LifecycleOwnerFragment<RawHtmlXBlockC
         }
 
         @Override
-        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
-            super.onReceivedHttpAuthRequest(view, handler, host, realm);
-        }
-
-        @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
             Log.d(TAG, "Inside on received error " + errorCode + " description " + description + " failing url " + failingUrl);
-        }
-
-        // http://stackoverflow.com/questions/13954049/intercept-post-requests-in-a-webview
-        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-        @Override
-        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-            return super.shouldInterceptRequest(view, url);
         }
 
         @Override
@@ -198,11 +202,6 @@ public class RawHtmlXBlockFragment extends LifecycleOwnerFragment<RawHtmlXBlockC
         public boolean onConsoleMessage(ConsoleMessage cm) {
             Log.d(TAG, cm.message() + " -- From line " + cm.lineNumber() + " of " + cm.sourceId());
             return true;
-        }
-
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            super.onProgressChanged(view, newProgress);
         }
     }
 }
