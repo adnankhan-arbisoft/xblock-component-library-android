@@ -28,6 +28,7 @@ import com.mckinsey.academy.xblocks.view.adapters.decorators.MCQListItemDecorato
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.mckinsey.academy.xblocks.common.Constants.EXTRA_XBLOCK_INFO;
 
@@ -214,5 +215,10 @@ public class MCQXBlockFragment extends LifecycleOwnerFragment<MCQXBlockCallback,
     @Override
     public void setLatestUserAnswer(XBlockUserAnswer<List<MCQOption>> userAnswer) {
         // TODO add code for MCQ/MRQ as needed.
+    }
+
+    @Override
+    public void setCustomHeaders(Map<String, String> customHeaders) {
+        // nothing required
     }
 }

@@ -13,6 +13,10 @@ public class XBlockInfoBuilder {
         return new LongAnswerXBlockInfoBuilder();
     }
 
+    public static RawHtmlXBlockInfoBuilder buildRawHtmlXBlockInfo() {
+        return new RawHtmlXBlockInfoBuilder();
+    }
+
     public static MCQXBlockInfoBuilder buildMCQXBlockInfo() {
         return new MCQXBlockInfoBuilder();
     }

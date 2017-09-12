@@ -77,6 +77,15 @@ public class XBlockSamplesActivity extends AppCompatActivity {
             }
         });
 
+        Button btnRawHtmlXBlock = findViewById(R.id.btn_launch_raw_html_xblock);
+        btnRawHtmlXBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent rawHtmlIntent = new Intent(XBlockSamplesActivity.this, XBlockRawHtmlSampleActivity.class);
+                startActivity(rawHtmlIntent);
+            }
+        });
+
         Button btnAnnouncements = (Button) findViewById(R.id.btn_launch_announcement);
         btnAnnouncements.setOnClickListener(new View.OnClickListener(){
             @Override
