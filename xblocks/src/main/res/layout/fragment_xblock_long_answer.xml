@@ -67,21 +67,25 @@
             android:src="@drawable/ic_field_expand"/>
 
         <!-- Feedback Message -->
-        <TextView
-            android:id="@+id/feedback_message"
+        <ScrollView
+            android:id="@+id/feedback_message_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="#F7F7F7"
-            android:gravity="center_horizontal"
-            android:inputType="textMultiLine"
-            android:padding="16dp"
-            android:scrollbars="vertical"
-            android:text="@string/fragment_long_answer_label_feedback_default"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="normal"
-            android:visibility="gone"/>
-
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/feedback_message"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:inputType="textMultiLine"
+                android:padding="16dp"
+                android:scrollbars="vertical"
+                android:text="@string/fragment_long_answer_label_feedback_default"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="normal"/>
+        </ScrollView>
     </FrameLayout>
 </LinearLayout>
