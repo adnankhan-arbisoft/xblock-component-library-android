@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,6 +45,8 @@ public class MCQFeedbackAdapter extends BaseRecyclerAdapter<MCQOption, MCQFeedba
         ViewHolder holder = new ViewHolder(this, mInflater.inflate(R.layout.item_mcq_option_feedback, parent, false),
                 isMultiSelectEnable);
         holder.cardView.setRadius(mCardRadius);
+        holder.feedbackIconCheckbox.setButtonDrawable(isMultiSelectEnable ?
+                R.drawable.selector_mrq_options : R.drawable.selector_mcq_feedback_options);
         return holder;
     }
 
@@ -54,16 +57,18 @@ public class MCQFeedbackAdapter extends BaseRecyclerAdapter<MCQOption, MCQFeedba
         holder.optionCheckbox.setChecked(option.isSelected());
         holder.optionText.setText(XBlockUtils.getTextFromHTML(option.getContent()));
 
+        holder.feedbackIconCheckbox.setChecked(isMultiSelectEnable ? option.isSelected() :
+                feedback.isCorrect());
         holder.feedbackView.setBackgroundColor(ContextCompat.getColor(mContext,
                 feedback.isCorrect() ? R.color.mcqFeedbackCorrectAnswerBackground :
                         R.color.mcqFeedbackIncorrectAnswerBackground));
-        holder.feedbackIcon.setImageResource(feedback.isCorrect() ?
+        holder.tipIcon.setImageResource(feedback.isCorrect() ?
                 R.drawable.ic_mcq_feedback_list_correct_green :
                 R.drawable.ic_mcq_feedback_list_error_red);
         holder.feedbackText.setTextColor(ContextCompat.getColor(mContext,
                 feedback.isCorrect() ? R.color.mcqFeedbackCorrectAnswerTextColor
                         : R.color.mcqFeedbackIncorrectAnswerTextColor));
-        if(!TextUtils.isEmpty(feedback.getMessage())) {
+        if (!TextUtils.isEmpty(feedback.getMessage())) {
             holder.feedbackText.setText(XBlockUtils.getTextFromHTML(feedback.getMessage()));
             holder.feedbackView.setVisibility(View.VISIBLE);
         } else {
@@ -74,7 +79,8 @@ public class MCQFeedbackAdapter extends BaseRecyclerAdapter<MCQOption, MCQFeedba
     static class ViewHolder extends MCQOptionsAdapter.ViewHolder {
 
         private final ViewGroup feedbackView;
-        private final ImageView feedbackIcon;
+        private final CheckBox feedbackIconCheckbox;
+        private final ImageView tipIcon;
         private final TextView feedbackText;
 
         ViewHolder(BaseRecyclerAdapter adapter, View root, boolean isMultiSelectEnable) {
@@ -82,8 +88,9 @@ public class MCQFeedbackAdapter extends BaseRecyclerAdapter<MCQOption, MCQFeedba
             optionView.setEnabled(false);
             optionCheckbox.setEnabled(false);
             feedbackView = itemView.findViewById(R.id.feedback_view);
-            feedbackIcon = itemView.findViewById(R.id.feedback_icon);
+            feedbackIconCheckbox = itemView.findViewById(R.id.option_checkbox);
             feedbackText = itemView.findViewById(R.id.feedback_text);
+            tipIcon = itemView.findViewById(R.id.tip_icon);
         }
     }
 }
