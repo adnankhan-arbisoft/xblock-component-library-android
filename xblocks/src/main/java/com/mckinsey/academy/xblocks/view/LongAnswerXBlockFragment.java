@@ -48,7 +48,6 @@ public class LongAnswerXBlockFragment extends
     private TextView mQuestionContentTextView = null;
     private ImageView mExpandInputFieldImageView = null;
     private View mQuestionCardView = null;
-    private View mUserInputContainerView = null;
     private TextView mFeedbackMessageTextView = null;
     private View mDoneIconContainer = null;
     private View mFeedbackMessageContainerView =  null;
@@ -93,7 +92,6 @@ public class LongAnswerXBlockFragment extends
         mUserAnswerEditText = (EditText) view.findViewById(R.id.view_user_answer);
         mExpandInputFieldImageView = (ImageView) view.findViewById(R.id.btn_expand);
         // container views
-        mUserInputContainerView = view.findViewById(R.id.user_answer_field_container);
         mQuestionCardView = view.findViewById(R.id.question_card_view);
         mFeedbackMessageTextView = (TextView) view.findViewById(R.id.feedback_message);
         mDoneIconContainer = view.findViewById(R.id.done_icon_container);
@@ -104,7 +102,8 @@ public class LongAnswerXBlockFragment extends
             mXBlockInfo = (LongAnswerXBlockInfo) args.getSerializable(EXTRA_XBLOCK_INFO);
             if (mXBlockInfo != null) {
                 mQuestionContentTextView.setText(XBlockUtils.getTextFromHTML(mXBlockInfo.getDetails()));
-                setPreAddedUserAnswer(mXBlockInfo.getUserAnswer());
+                setPreAddedUserAnswer(mXBlockInfo.getUserAnswer(), false);
+                mCallback.onAnswerFieldUpdate(true);
             }
         }
 
@@ -140,6 +139,14 @@ public class LongAnswerXBlockFragment extends
             }
         });
 
+        mUserAnswerEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b && mUserAnswerEditText.getText().length() > 0) {
+                    mCallback.onAnswerFieldUpdate(false);
+                }
+            }
+        });
     }
 
     @Override
@@ -157,20 +164,22 @@ public class LongAnswerXBlockFragment extends
                 if (userAnswerFromExpandedState != null) {
                     // not checking for length, should update parent view when the full screen closes.
                     // this can empty user answer also
-                    setPreAddedUserAnswer(userAnswerFromExpandedState);
+                    setPreAddedUserAnswer(userAnswerFromExpandedState, true);
                 }
             }
         }
     }
 
-    private void setPreAddedUserAnswer(String userAnswer) {
+    private void setPreAddedUserAnswer(String userAnswer, boolean setSubmitButton) {
         mUserAnswerEditText.setText(userAnswer);
         final int answerLength = mUserAnswerEditText.getText().length();
         mUserAnswerEditText.setSelection(answerLength);
 
         if (mCallback != null) {
             // update UI
-            mCallback.onAnswerFieldUpdate(answerLength == 0);
+            if (setSubmitButton) {
+                mCallback.onAnswerFieldUpdate(answerLength == 0);
+            }
             // pass user answer to callback consumer in case required
             mCallback.onAnswerUpdate(mUserAnswerEditText.getText().toString());
         }
@@ -180,10 +189,14 @@ public class LongAnswerXBlockFragment extends
         if (!TextUtils.isEmpty(feedbackMessage)) {
             mFeedbackMessageTextView.setText(XBlockUtils.getTextFromHTML(feedbackMessage));
         }
+        // hiding the edit text
+        mUserAnswerEditText.setVisibility(View.INVISIBLE);
+        mExpandInputFieldImageView.setVisibility(View.INVISIBLE);
 
-        XBlockUtils.hideSoftInput(getActivity(), getView());
+        // XBlockUtils.hideSoftInput(getActivity(), getView());
         Animation slideUpAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_up);
-        slideUpAnimation.setDuration(1000L);
+        slideUpAnimation.setStartOffset(1000L);
+        slideUpAnimation.setDuration(2000L);
         slideUpAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -219,7 +232,8 @@ public class LongAnswerXBlockFragment extends
 
     @Override
     public void setLatestUserAnswer(XBlockUserAnswer<String> userAnswer) {
-        setPreAddedUserAnswer(userAnswer.get());
+        setPreAddedUserAnswer(userAnswer.get(), false);
+        mCallback.onAnswerFieldUpdate(true);
     }
 
     @Override

@@ -28,14 +28,16 @@ public class RawHtmlXBlockSampleFragment extends Fragment implements RawHtmlXBlo
     private static final String ARG_STUDENT_VIEW_URL = "param_student_view_url";
     private static final String ARG_AUTH_TOKEN = "param_auth_token";
     private static final String ARG_RAW_HTML = "param_raw_html";
+    private static final String ARG_BASE_URL = "param_base_url";
 
     private String mParamTitle;
     private String mParamDesc;
     private String mParamStudentViewUrl;
     private String mParamAuthToken;
     private String mHtml;
+    private String mBaseUrl;
 
-    public static RawHtmlXBlockSampleFragment newInstance(String title, String desc, String studentViewUrl, String authToken, String html) {
+    public static RawHtmlXBlockSampleFragment newInstance(String title, String desc, String studentViewUrl, String authToken, String html, String baseUrl) {
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
         args.putString(ARG_DESC, desc);
@@ -43,6 +45,7 @@ public class RawHtmlXBlockSampleFragment extends Fragment implements RawHtmlXBlo
         args.putString(ARG_AUTH_TOKEN, authToken);
         args.putString(ARG_AUTH_TOKEN, authToken);
         args.putString(ARG_RAW_HTML, html);
+        args.putString(ARG_BASE_URL, baseUrl);
 
         RawHtmlXBlockSampleFragment fragment = new RawHtmlXBlockSampleFragment();
         fragment.setArguments(args);
@@ -59,6 +62,7 @@ public class RawHtmlXBlockSampleFragment extends Fragment implements RawHtmlXBlo
             mParamStudentViewUrl = bundle.getString(ARG_STUDENT_VIEW_URL);
             mParamAuthToken = bundle.getString(ARG_AUTH_TOKEN);
             mHtml = bundle.getString(ARG_RAW_HTML);
+            mBaseUrl = bundle.getString(ARG_BASE_URL);
         }
     }
 
@@ -84,6 +88,7 @@ public class RawHtmlXBlockSampleFragment extends Fragment implements RawHtmlXBlo
                 .setAuthToken(mParamAuthToken)
                 .setStudentViewUrl(mParamStudentViewUrl)
                 .setHtml(mHtml)
+                .setBaseUrl(mBaseUrl)
                 .build();
 
         final XBlock xBlock = XBlock.with(getChildFragmentManager(), R.id.xblock_container, xBlockInfo, this/*call back*/);
