@@ -120,6 +120,16 @@ public class RawHtmlXBlockSampleFragment extends Fragment implements RawHtmlXBlo
     }
 
     @Override
+    public void onPageStarted() {
+
+    }
+
+    @Override
+    public void onPageFinished() {
+
+    }
+
+    @Override
     public void onError(String errorMessage) {
         // nothing required
     }
