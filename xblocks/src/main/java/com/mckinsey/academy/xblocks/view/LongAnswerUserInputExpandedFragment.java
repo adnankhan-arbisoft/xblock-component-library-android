@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.mckinsey.academy.xblocks.R;
+import com.mckinsey.academy.xblocks.utils.XBlockUtils;
 
 /**
  * View for the Long-Answer (Free Text) user input expanded form.
@@ -65,6 +66,7 @@ public class LongAnswerUserInputExpandedFragment extends BottomSheetDialogFragme
         mDoneActionClickListener = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                XBlockUtils.hideSoftInput(v.getContext(), v);
                 passBackUserAnswer(true);
             }
         };
