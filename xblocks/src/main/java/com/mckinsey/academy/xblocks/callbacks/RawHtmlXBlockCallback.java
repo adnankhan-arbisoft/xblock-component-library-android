@@ -11,6 +11,10 @@ public interface RawHtmlXBlockCallback extends Callback {
 
     void onLoadStudentViewUrl();
 
+    void onPageStarted();
+
+    void onPageFinished();
+
     void onError(String errorMessage);
 
     public static RawHtmlXBlockCallback NULL_CALLBACK = new RawHtmlXBlockCallback() {
@@ -23,6 +27,16 @@ public interface RawHtmlXBlockCallback extends Callback {
         @Override
         public void onLoadStudentViewUrl() {
             // TODO nothing required
+        }
+
+        @Override
+        public void onPageStarted() {
+
+        }
+
+        @Override
+        public void onPageFinished() {
+
         }
 
         @Override

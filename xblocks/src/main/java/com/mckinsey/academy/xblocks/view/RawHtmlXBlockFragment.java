@@ -1,8 +1,6 @@
 package com.mckinsey.academy.xblocks.view;
 
-import android.annotation.TargetApi;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,13 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
-import android.webkit.HttpAuthHandler;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.mckinsey.academy.xblocks.R;
@@ -40,7 +35,6 @@ public class RawHtmlXBlockFragment extends LifecycleOwnerFragment<RawHtmlXBlockC
     private static final String TAG = RawHtmlXBlockFragment.class.getSimpleName();
 
     private WebView mWebView = null;
-    private ProgressBar mProgressBar = null;
 
     private RawHtmlXBlockInfo rawHtmlXBlockInfo = null;
 
@@ -63,7 +57,6 @@ public class RawHtmlXBlockFragment extends LifecycleOwnerFragment<RawHtmlXBlockC
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mProgressBar = view.findViewById(R.id.progress_bar_view);
         setupWebView();
     }
 
@@ -173,18 +166,19 @@ public class RawHtmlXBlockFragment extends LifecycleOwnerFragment<RawHtmlXBlockC
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            mProgressBar.setVisibility(View.VISIBLE);
+            mCallback.onPageStarted();
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            mProgressBar.setVisibility(View.GONE);
+            mCallback.onPageFinished();
         }
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
+            mCallback.onPageFinished();
             Log.d(TAG, "Inside on received error " + errorCode + " description " + description + " failing url " + failingUrl);
         }
 

@@ -50,6 +50,7 @@ public class LongAnswerXBlockFragment extends
     private View mQuestionCardView = null;
     private View mUserInputContainerView = null;
     private TextView mFeedbackMessageTextView = null;
+    private View mDoneIconContainer = null;
     private View mFeedbackMessageContainerView =  null;
 
     private BottomSheetBehavior mBottomSheetBehavior;
@@ -95,6 +96,7 @@ public class LongAnswerXBlockFragment extends
         mUserInputContainerView = view.findViewById(R.id.user_answer_field_container);
         mQuestionCardView = view.findViewById(R.id.question_card_view);
         mFeedbackMessageTextView = (TextView) view.findViewById(R.id.feedback_message);
+        mDoneIconContainer = view.findViewById(R.id.done_icon_container);
         mFeedbackMessageContainerView = view.findViewById(R.id.feedback_message_container);
 
         Bundle args = getArguments();
@@ -186,6 +188,7 @@ public class LongAnswerXBlockFragment extends
             @Override
             public void onAnimationStart(Animation animation) {
                 mFeedbackMessageContainerView.setVisibility(View.VISIBLE);
+                mDoneIconContainer.setVisibility(View.VISIBLE);
             }
 
             @Override

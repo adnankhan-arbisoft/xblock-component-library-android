@@ -82,10 +82,27 @@
                 android:inputType="textMultiLine"
                 android:padding="16dp"
                 android:scrollbars="vertical"
-                android:text="@string/fragment_long_answer_label_feedback_default"
+                android:text="@null"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="normal"/>
         </ScrollView>
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/done_icon_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F7F7F7"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/feedback_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_tick_green"/>
     </FrameLayout>
 </LinearLayout>
