@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
@@ -22,15 +21,17 @@
         android:gravity="center"
         android:minHeight="@dimen/mcq_item_list_min_height"
         android:orientation="horizontal"
+        android:paddingBottom="@dimen/mcq_options_padding_vertical"
         android:paddingLeft="@dimen/mcq_item_list_padding_horizontal"
-        android:paddingRight="@dimen/mcq_item_list_padding_horizontal">
+        android:paddingRight="@dimen/mcq_item_list_padding_horizontal"
+        android:paddingTop="@dimen/mcq_options_padding_vertical">
 
         <CheckBox
             android:id="@+id/option_checkbox"
             android:layout_width="@dimen/mcq_item_list_checkbox_width_height"
             android:layout_height="@dimen/mcq_item_list_checkbox_width_height"
             android:button="@drawable/selector_mcq_options"
-            tools:checked="true"/>
+            tools:checked="true" />
 
         <TextView
             android:id="@+id/option_text"
@@ -41,6 +42,6 @@
             android:lineSpacingMultiplier="1.3"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="14sp"
-            tools:text="The team demonstrated the strong divergent thinking the problem called for and required."/>
+            tools:text="The team demonstrated the strong divergent thinking the problem called for and required." />
     </LinearLayout>
 </android.support.v7.widget.CardView>
