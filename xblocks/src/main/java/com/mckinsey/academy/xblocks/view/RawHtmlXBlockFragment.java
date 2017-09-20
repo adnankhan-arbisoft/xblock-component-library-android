@@ -70,6 +70,8 @@ public class RawHtmlXBlockFragment extends LifecycleOwnerFragment<RawHtmlXBlockC
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
 
         webView.setWebViewClient(new RawHTMLWebViewClient());
         webView.setWebChromeClient(new RawHTMLWebChromeClient());
