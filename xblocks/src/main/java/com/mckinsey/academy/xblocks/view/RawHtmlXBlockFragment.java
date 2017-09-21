@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,7 +24,10 @@ import com.mckinsey.academy.xblocks.info.XBlockInfo;
 import com.mckinsey.academy.xblocks.info.XBlockSubmitResponse;
 import com.mckinsey.academy.xblocks.info.XBlockUserAnswer;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.mckinsey.academy.xblocks.common.Constants.EXTRA_XBLOCK_INFO;
 
@@ -33,6 +37,8 @@ import static com.mckinsey.academy.xblocks.common.Constants.EXTRA_XBLOCK_INFO;
 public class RawHtmlXBlockFragment extends LifecycleOwnerFragment<RawHtmlXBlockCallback, Void, Void> {
 
     private static final String TAG = RawHtmlXBlockFragment.class.getSimpleName();
+
+    private static final String IMAGE_EXPLORER_REGEX = "image_explorer\\.[a-zA-Z0-9]+\\.css";
 
     private WebView mWebView = null;
 
@@ -187,6 +193,36 @@ public class RawHtmlXBlockFragment extends LifecycleOwnerFragment<RawHtmlXBlockC
         @Override
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(final WebView view, String url) {
+            String lastBitOfUrl = getLastBitFromUrl(url);
+            if (Pattern.compile(IMAGE_EXPLORER_REGEX).matcher(lastBitOfUrl).matches()) {
+                return getCssWebResourceResponseFromAsset();
+            } else {
+                return super.shouldInterceptRequest(view, url);
+            }
+        }
+
+        /**
+         * Return WebResourceResponse with CSS markup from an asset (e.g."css/image_explorer.css").
+         */
+        private WebResourceResponse getCssWebResourceResponseFromAsset() {
+            try {
+                return getUtf8EncodedCssWebResourceResponse(
+                        getResources().getAssets().open("css/image-explorer.css"));
+            } catch (IOException e) {
+                return null;
+            }
+        }
+
+        private WebResourceResponse getUtf8EncodedCssWebResourceResponse(InputStream data) {
+            return new WebResourceResponse("text/css", "UTF-8", data);
+        }
+
+        public String getLastBitFromUrl(final String url) {
+            return url.substring(url.lastIndexOf('/') + 1);
         }
     }
 
